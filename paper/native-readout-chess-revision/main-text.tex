@@ -133,7 +133,7 @@ The difference is not just that more cheating gets labeled as caught. Random sto
 
 The no-audit control isolates the role of the penalty. With random stopping but no audit penalties, all three seeds reach 99.62--100\% unpenalized cheating: random depth alone does not suppress it. Table~\ref{tab:chess-endpoints} reports the three primary pairs and the three no-audit runs.
 
-The shared starting adapter was prepared with both legal and opponent-piece moves, so the comparison measures what training does with an available cheating behavior. Earlier legal-only supervised attempts won none of twelve development games each, though they could issue legal commands. We are therefore not observing the destruction of an established winning chess policy. Those earlier attempts used different tasks and checkpoints, however, and are not matched tests of capability preservation.
+The shared adapter was prepared with legal and opponent-piece moves, so cheating was already available. Earlier legal-only training did not establish winning chess play. These attempts do not establish capability preservation (Appendix~\ref{app:prior-chess}).
 
 \section{DISCUSSION}
 The experiments test complementary parts of the strategy. Arithmetic measures the predicted reward--visibility tradeoff. The known-exit comparison shows how a policy can hide evidence until execution. Chess tests whether unpredictable execution reduces rule violations under RL. Agreement with the arithmetic optimum supports the mechanism; it does not predict a chess cheating rate.
