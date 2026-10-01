@@ -1,6 +1,8 @@
+# Preserved cluster environment rechecked 2026-10-01; not a historical per-run lock.
+# Install PyTorch for CUDA 12.8 as appropriate for your platform.
 -r requirements-analysis.txt
 torch==2.8.0
-transformers==4.57.6
-accelerate
-safetensors
-huggingface-hub
+transformers==4.55.4
+safetensors==0.8.0
+huggingface-hub==0.36.2
+# Main reported Ouro runs use the custom LoRA implementation; no PEFT dependency.

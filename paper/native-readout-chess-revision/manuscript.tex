@@ -1,8 +1,8 @@
 \documentclass[twoside]{article}
 \ifdefined\AnonymousSubmission
-\usepackage{aistats2026}
+\usepackage{aistats2027}
 \else
-\usepackage[preprint]{aistats2026}
+\usepackage[preprint]{aistats2027}
 \fi
 \usepackage[T1]{fontenc}
 \usepackage{lmodern}
@@ -34,7 +34,11 @@
 \aistatsaddress{\textsuperscript{1}Princeton University}
 ]
 \begin{abstract}
-A monitor that detects reward hacking may stop working when a model is trained against it. We introduce a monitoring method for looped transformers that ties the monitored readout to the model's actual output. After each reasoning pass, the model may be stopped and required to answer through the same decoder distribution that would otherwise be monitored. The resulting tradeoff does not depend on the hidden representation staying informative to a learned probe: it holds even when readout distributions can be chosen arbitrarily, provided monitoring and execution share the readout and the future stop is hidden. We derive the optimal token probabilities for a cross-entropy reward and linear monitoring penalty, and test them using two-digit arithmetic. Mean absolute error is 1.68 percentage points on the original penalized grid and 3.73 points including an adaptive extension, with substantial improvement during training. We then test the method through chess reinforcement learning, where moving an opponent's pieces can earn reward despite violating the rules. Across three paired seeds, fixed stopping produces 99.04\% unpenalized cheating on held-out board families, compared with 4.17--4.55\% under random stopping.
+\ifdefined\AnonymousSubmission
+\input{paper/native-readout-chess-revision/abstract-registered.tex}
+\else
+\input{paper/native-readout-chess-revision/abstract-sharing.tex}
+\fi
 \end{abstract}
 \input{paper/native-readout-chess-revision/main-text.tex}
 \subsubsection*{Generative AI Statement}

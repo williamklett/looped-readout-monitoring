@@ -136,9 +136,9 @@ The no-audit control isolates the role of the penalty. With random stopping but 
 The shared adapter was prepared with legal and opponent-piece moves, so cheating was already available. Earlier legal-only training did not establish winning chess play. These attempts do not establish capability preservation (Appendix~\ref{app:prior-chess}).
 
 \section{DISCUSSION}
-The experiments test complementary parts of the strategy. Arithmetic measures the predicted reward--visibility tradeoff. The known-exit comparison shows how a policy can hide evidence until execution. Chess tests whether unpredictable execution reduces rule violations under RL. Agreement with the arithmetic optimum supports the mechanism; it does not predict a chess cheating rate.
+Arithmetic tests the predicted tradeoff and evasion at a known exit; chess tests rule violations under RL. Both support coupling monitored evidence to unpredictable execution. The arithmetic equation does not predict chess cheating rates.
 
-The method complements learned probes and detector-guided training \citep{belrose2023,gupta2025,taufeeque2026}, and connects to incentive-based auditing \citep{agarwal2026,griffin2024}. It applies when concerning behavior is recognizable and the monitoring/execution interface can be controlled. Richer tasks and retained legal performance are the next tests.
+The method complements learned monitors and incentive-based auditing \citep{belrose2023,gupta2025,taufeeque2026,agarwal2026,griffin2024}. It requires recognizable behavior and control over execution. Richer tasks and retained legal performance are the next tests.
 
 \section{LIMITATIONS}
 \textbf{Discouraging cheating does not ensure a useful alternative.} Two chess seeds mostly produce rejected commands; one improves legal execution, with limited transfer. Earlier failures to learn winning play describe the starting point, not capability preservation. A stronger test would begin with a competent legal policy and measure both reward hacking and retained performance.

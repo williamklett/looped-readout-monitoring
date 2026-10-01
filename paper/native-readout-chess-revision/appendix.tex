@@ -421,7 +421,7 @@ MAE is the mean absolute observed-minus-predicted mass, in percentage points. MA
 
 \section{REPRODUCIBILITY MATERIALS}\label{app:public-code}
 \ifdefined\AnonymousSubmission
-The named public repository is omitted from this anonymous version. The release contains experiment source, frozen predictions, saved evaluation evidence, figure-generation scripts, and manuscript sources. An anonymized code/data package has not been attached to this PDF.
+The separate anonymous reproducibility archive contains experiment source, frozen predictions, saved evaluation evidence, and figure-generation scripts. Author-identifying manuscript sources and public repository links are omitted.
 \else
 Code and analysis materials are available at
 \url{https://github.com/williamklett/looped-readout-monitoring}.
@@ -429,3 +429,5 @@ The package contains experiment code, frozen predictions, all 81 native arithmet
 \fi
 
 The CPU scripts reproduce statistics and figures, checking saved chess evaluations against per-depth outcomes. This verifies analysis, not independent training. A manifest records file hashes and normalized paths. Fresh training additionally requires base weights, starting adapters, the engine binary, and ported cluster configuration. Publication does not retrospectively preregister these experiments.
+
+\input{paper/native-readout-chess-revision/reproducibility.tex}

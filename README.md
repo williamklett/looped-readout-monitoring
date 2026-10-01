@@ -26,7 +26,7 @@ The verification recomputes arithmetic errors from all 81 saved endpoints, check
 - Chess board splits and the engine evaluation cache.
 - Experiment training, environment, loss, sampling, stopping, and model-interface source code, plus dependency modules.
 - The five-run adaptive arithmetic follow-up summary and trajectories.
-- LaTeX source, official unmodified AISTATS 2026 style files, and figures.
+- LaTeX source, official unmodified AISTATS 2027 style files, and figures.
 
 ## Rerunning training: additional requirements
 
@@ -56,8 +56,10 @@ The lower-penalty sweep and worst-five follow-up were adaptive. The five runs we
 
 ## AI statement
 
-In this work, we used generative AI tools (GPT 6 Astra) for the coding of experiments, drafting of this paper, and formulation of mathematical proofs. We have not used generative AI tools for the generation of central ideas or motivations related to the paper. We have reviewed all AI-assisted work.
+In this work, we used generative AI tools (GPT 6 Astra) for experimental design, coding of experiments, drafting of this paper, and formulation of mathematical proofs. We have not used generative AI tools for the generation of central ideas or motivations related to the paper. We have reviewed all AI-assisted work.
 
 ## Third-party assets
 
 Base model weights, engine binaries, and final trained adapters are not redistributed here. Obtain external assets under their upstream licenses. The bundled AISTATS and fancyhdr style files retain their upstream notices. No blanket license is asserted over third-party materials.
+
+See `ASSETS.md` for asset attribution, licenses, and missing training assets; `COMPUTE.json` records scheduler-backed hardware and the dated runtime check. The anonymous entrypoint uses the registered abstract verbatim.

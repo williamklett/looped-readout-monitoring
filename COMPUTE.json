@@ -1,0 +1,38 @@
+{
+  "source": "Completed-job scheduler records retrieved 2026-10-01; GPU type from cluster inventory and saved device integrity records",
+  "resources_per_run": {
+    "gpu_allocations": 1,
+    "cpu_cores": 8,
+    "host_memory_GiB": 48
+  },
+  "native_runs": {
+    "A100 MIG 3g.20gb": 55,
+    "A100 GPU": 26
+  },
+  "historical_arithmetic_runs": 12,
+  "historical_arithmetic_device": "A100 MIG 3g.20gb",
+  "followup_runs": 5,
+  "followup_device": "A100 MIG 3g.20gb",
+  "chess_family_runs": 12,
+  "chess_family_device": "A100 MIG 3g.20gb",
+  "chess_family_elapsed_range": "56m14s to 2h41m11s; includes training/evaluation/review",
+  "runtime_reverified_2026_10_01": {
+    "python": "3.12.4",
+    "torch": "2.8.0+cu128",
+    "cuda_runtime": "12.8",
+    "transformers": "4.55.4",
+    "chess": "1.11.2",
+    "safetensors": "0.8.0",
+    "huggingface-hub": "0.36.2"
+  },
+  "runtime_note": "Read from the preserved cluster environment on 2026-10-01; not a contemporaneous per-run dependency lock. No fresh training reproduction was performed.",
+  "stockfish": {
+    "version": "11 64",
+    "depth": 8,
+    "sha256": "da0b5d3fb5f07c9774b0a932b2e30dfc3aacd80629d05d5b92f69f7ff142509d"
+  },
+  "model": {
+    "id": "ByteDance/Ouro-1.4B",
+    "revision": "574fa66cb8bf5abdc979642d01cf2b79b16bfab1"
+  }
+}
