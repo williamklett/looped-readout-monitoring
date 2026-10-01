@@ -18,7 +18,7 @@ def endpoint(k):
  return p['family_weighted']
 def avg(vs):return [sum(v[i] for v in vs)/len(vs) for i in (0,1)]
 def pct(v):return f'{100*v[0]:.2f}' if abs(v[0]-v[1])<1e-10 else f'{100*v[0]:.2f}--{100*v[1]:.2f}'
-plt.rcParams.update({'font.size':14,'axes.labelsize':15,'axes.titlesize':16,'axes.titleweight':'bold','axes.labelweight':'bold','axes.spines.top':False,'axes.spines.right':False,'svg.fonttype':'none'})
+plt.rcParams.update({'font.size':14,'axes.labelsize':15,'axes.titlesize':16,'axes.titleweight':'bold','axes.labelweight':'bold','axes.spines.top':False,'axes.spines.right':False,'svg.fonttype':'none','pdf.fonttype':42})
 fig,axes=plt.subplots(1,2,figsize=(12,4.6))
 colors={17:'#2374AB',29:'#8D529C',43:'#D67B25'}
 for seed in (17,29,43):

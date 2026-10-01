@@ -424,7 +424,7 @@ but they remain crafted endgames, not a representative sample of chess.
 \section{TRAINING AND MEASUREMENT PROTOCOL}
 \label{app:training-details}
 \paragraph{Model and behavior.}
-We use Ouro-1.4B \cite{zhu2025}, initialized with a preserved addition adapter. Only shared LoRA updates are trained (rank 16, scale 32; \cite{hu2021}); the last physical block is excluded. Base weights, normalization, embeddings, decoder, and the last block stay fixed. All seeds start from the same adapter.
+We use Ouro-1.4B \citep{zhu2025}, initialized with a preserved addition adapter. Only shared LoRA updates are trained (rank 16, scale 32; \citep{hu2021}); the last physical block is excluded. Base weights, normalization, embeddings, decoder, and the last block stay fixed. All seeds start from the same adapter.
 
 Questions ask for $a+b$, with $0\le a\le b<50$ and sums 10--98. The retained split has 878 training, 124 development, and 243 test questions. Every answer is exactly two original digit tokens. There is no new vocabulary, output mask, EOS target, third token, or forward computation after the second token. The monitored set contains 893 numeric tokens, including every possible target digit. Appendix~\ref{app:repro} specifies prompts and set construction.
 
@@ -449,9 +449,9 @@ MAE is the mean absolute observed-minus-predicted mass, in percentage points. MA
 \ifdefined\AnonymousSubmission
 The named public repository is omitted from this anonymous version. The release contains experiment source, frozen predictions, saved evaluation evidence, figure-generation scripts, and manuscript sources. An anonymized code/data package has not been attached to this PDF.
 \else
-Code and analysis materials are available at
+A reproducibility release has been prepared for
 \url{https://github.com/williamklett/looped-readout-monitoring}.
-The repository includes the experiment implementation, frozen arithmetic predictions, all 81 native arithmetic summaries and development histories, all twelve historical stopping-control endpoints, and all twelve final chess runs with per-board evaluation traces. It also includes the board splits, engine-score cache, and figure-generation scripts.
+The package contains experiment code, frozen predictions, all 81 native arithmetic summaries and histories, all twelve historical stopping-control endpoints, and all twelve chess runs with per-board evaluations. Board splits, cached engine scores, and figure scripts are included. Public upload is awaiting approval.
 \fi
 
-The CPU reproduction path recomputes the headline statistics and regenerates the main figures from the saved evidence without model inference. Its verification checks all 84 chess evaluations against per-depth outcomes; it does not treat an existing summary as an independent replication. The source manifest records public-file hashes and normalization of machine-specific paths. Large base weights, starting adapters, and the chess-engine executable are not included. Fresh training requires those assets and porting the documented cluster paths and integrity manifests; the current release establishes analysis reproducibility, not a portable end-to-end training reproduction. Publishing this repository timestamps the present release and does not retrospectively preregister the experiments.
+The CPU scripts reproduce statistics and figures, checking all 84 chess evaluations against per-depth outcomes. This verifies analysis, not independent training. A manifest records file hashes and normalized paths. Fresh training additionally requires base weights, starting adapters, the engine binary, and ported cluster configuration. Publication does not retrospectively preregister these experiments.
