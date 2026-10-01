@@ -1,0 +1,934 @@
+{
+  "schema": "native-two-digit-ce-v1",
+  "formula": "c[j,k]*=min(1,q[k]/(lambda*w[k]))",
+  "normalization": "Mean over two CE terms and mean over two pre-exit penalties; factors 1/2 cancel.",
+  "prefix": "Position2 theoretical prediction is conditioned on the correct first digit (teacher forcing).",
+  "limitation": "Independent probability relaxation, not an SGD convergence or greedy accuracy theorem.",
+  "primary_depth": 4,
+  "threshold": 0.1,
+  "cells": [
+    {
+      "index": 0,
+      "seed": 17,
+      "stop_probability": 0.25,
+      "audit_probability": 0.75,
+      "boundary_factor": 0.0,
+      "penalty_weight": 0.0,
+      "primary_lambda": 17.204301075268816,
+      "predicted_mass": [
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "name": "p0.25-f0-s17"
+    },
+    {
+      "index": 1,
+      "seed": 17,
+      "stop_probability": 0.25,
+      "audit_probability": 0.75,
+      "boundary_factor": 0.75,
+      "penalty_weight": 12.903225806451612,
+      "primary_lambda": 17.204301075268816,
+      "predicted_mass": [
+        0.05468954586176005,
+        0.08713219148001757,
+        0.11298405466970388,
+        0.13333333333333336,
+        0.14761904761904765,
+        0.155,
+        1.0
+      ],
+      "name": "p0.25-f0.75-s17"
+    },
+    {
+      "index": 2,
+      "seed": 17,
+      "stop_probability": 0.25,
+      "audit_probability": 0.75,
+      "boundary_factor": 1.0,
+      "penalty_weight": 17.204301075268816,
+      "primary_lambda": 17.204301075268816,
+      "predicted_mass": [
+        0.041017159396320044,
+        0.06534914361001318,
+        0.08473804100227791,
+        0.1,
+        0.11071428571428572,
+        0.11625000000000002,
+        1.0
+      ],
+      "name": "p0.25-f1-s17"
+    },
+    {
+      "index": 3,
+      "seed": 17,
+      "stop_probability": 0.25,
+      "audit_probability": 0.75,
+      "boundary_factor": 1.25,
+      "penalty_weight": 21.50537634408602,
+      "primary_lambda": 17.204301075268816,
+      "predicted_mass": [
+        0.03281372751705603,
+        0.05227931488801054,
+        0.06779043280182233,
+        0.08000000000000002,
+        0.08857142857142858,
+        0.09300000000000001,
+        1.0
+      ],
+      "name": "p0.25-f1.25-s17"
+    },
+    {
+      "index": 4,
+      "seed": 17,
+      "stop_probability": 0.25,
+      "audit_probability": 0.75,
+      "boundary_factor": 2.0,
+      "penalty_weight": 34.40860215053763,
+      "primary_lambda": 17.204301075268816,
+      "predicted_mass": [
+        0.020508579698160022,
+        0.03267457180500659,
+        0.04236902050113896,
+        0.05,
+        0.05535714285714286,
+        0.05812500000000001,
+        1.0
+      ],
+      "name": "p0.25-f2-s17"
+    },
+    {
+      "index": 5,
+      "seed": 17,
+      "stop_probability": 0.5,
+      "audit_probability": 0.5,
+      "boundary_factor": 0.0,
+      "penalty_weight": 0.0,
+      "primary_lambda": 46.15384615384615,
+      "predicted_mass": [
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "name": "p0.5-f0-s17"
+    },
+    {
+      "index": 6,
+      "seed": 17,
+      "stop_probability": 0.5,
+      "audit_probability": 0.5,
+      "boundary_factor": 0.75,
+      "penalty_weight": 34.61538461538461,
+      "primary_lambda": 46.15384615384615,
+      "predicted_mass": [
+        0.04164164164164165,
+        0.07455197132616488,
+        0.10505050505050506,
+        0.13333333333333336,
+        0.15757575757575756,
+        0.17333333333333337,
+        1.0
+      ],
+      "name": "p0.5-f0.75-s17"
+    },
+    {
+      "index": 7,
+      "seed": 17,
+      "stop_probability": 0.5,
+      "audit_probability": 0.5,
+      "boundary_factor": 1.0,
+      "penalty_weight": 46.15384615384615,
+      "primary_lambda": 46.15384615384615,
+      "predicted_mass": [
+        0.031231231231231234,
+        0.05591397849462366,
+        0.07878787878787881,
+        0.10000000000000002,
+        0.11818181818181818,
+        0.13,
+        1.0
+      ],
+      "name": "p0.5-f1-s17"
+    },
+    {
+      "index": 8,
+      "seed": 17,
+      "stop_probability": 0.5,
+      "audit_probability": 0.5,
+      "boundary_factor": 1.25,
+      "penalty_weight": 57.69230769230769,
+      "primary_lambda": 46.15384615384615,
+      "predicted_mass": [
+        0.024984984984984988,
+        0.04473118279569892,
+        0.06303030303030303,
+        0.08000000000000002,
+        0.09454545454545453,
+        0.10400000000000001,
+        1.0
+      ],
+      "name": "p0.5-f1.25-s17"
+    },
+    {
+      "index": 9,
+      "seed": 17,
+      "stop_probability": 0.5,
+      "audit_probability": 0.5,
+      "boundary_factor": 2.0,
+      "penalty_weight": 92.3076923076923,
+      "primary_lambda": 46.15384615384615,
+      "predicted_mass": [
+        0.015615615615615617,
+        0.02795698924731183,
+        0.039393939393939405,
+        0.05000000000000001,
+        0.05909090909090909,
+        0.065,
+        1.0
+      ],
+      "name": "p0.5-f2-s17"
+    },
+    {
+      "index": 10,
+      "seed": 17,
+      "stop_probability": 0.75,
+      "audit_probability": 0.25,
+      "boundary_factor": 0.0,
+      "penalty_weight": 0.0,
+      "primary_lambda": 127.43362831858406,
+      "predicted_mass": [
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "name": "p0.75-f0-s17"
+    },
+    {
+      "index": 11,
+      "seed": 17,
+      "stop_probability": 0.75,
+      "audit_probability": 0.25,
+      "boundary_factor": 0.75,
+      "penalty_weight": 95.57522123893804,
+      "primary_lambda": 127.43362831858406,
+      "predicted_mass": [
+        0.036369579703038765,
+        0.06941165178999906,
+        0.1016301292861158,
+        0.13333333333333336,
+        0.163768115942029,
+        0.18833333333333335,
+        1.0
+      ],
+      "name": "p0.75-f0.75-s17"
+    },
+    {
+      "index": 12,
+      "seed": 17,
+      "stop_probability": 0.75,
+      "audit_probability": 0.25,
+      "boundary_factor": 1.0,
+      "penalty_weight": 127.43362831858406,
+      "primary_lambda": 127.43362831858406,
+      "predicted_mass": [
+        0.027277184777279074,
+        0.052058738842499286,
+        0.07622259696458684,
+        0.1,
+        0.12282608695652177,
+        0.14125000000000001,
+        1.0
+      ],
+      "name": "p0.75-f1-s17"
+    },
+    {
+      "index": 13,
+      "seed": 17,
+      "stop_probability": 0.75,
+      "audit_probability": 0.25,
+      "boundary_factor": 1.25,
+      "penalty_weight": 159.29203539823007,
+      "primary_lambda": 127.43362831858406,
+      "predicted_mass": [
+        0.02182174782182326,
+        0.04164699107399943,
+        0.060978077571669474,
+        0.08000000000000002,
+        0.09826086956521742,
+        0.11300000000000002,
+        1.0
+      ],
+      "name": "p0.75-f1.25-s17"
+    },
+    {
+      "index": 14,
+      "seed": 17,
+      "stop_probability": 0.75,
+      "audit_probability": 0.25,
+      "boundary_factor": 2.0,
+      "penalty_weight": 254.8672566371681,
+      "primary_lambda": 127.43362831858406,
+      "predicted_mass": [
+        0.013638592388639537,
+        0.026029369421249643,
+        0.03811129848229342,
+        0.05,
+        0.06141304347826088,
+        0.07062500000000001,
+        1.0
+      ],
+      "name": "p0.75-f2-s17"
+    },
+    {
+      "index": 15,
+      "seed": 29,
+      "stop_probability": 0.25,
+      "audit_probability": 0.75,
+      "boundary_factor": 0.0,
+      "penalty_weight": 0.0,
+      "primary_lambda": 17.204301075268816,
+      "predicted_mass": [
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "name": "p0.25-f0-s29"
+    },
+    {
+      "index": 16,
+      "seed": 29,
+      "stop_probability": 0.25,
+      "audit_probability": 0.75,
+      "boundary_factor": 0.75,
+      "penalty_weight": 12.903225806451612,
+      "primary_lambda": 17.204301075268816,
+      "predicted_mass": [
+        0.05468954586176005,
+        0.08713219148001757,
+        0.11298405466970388,
+        0.13333333333333336,
+        0.14761904761904765,
+        0.155,
+        1.0
+      ],
+      "name": "p0.25-f0.75-s29"
+    },
+    {
+      "index": 17,
+      "seed": 29,
+      "stop_probability": 0.25,
+      "audit_probability": 0.75,
+      "boundary_factor": 1.0,
+      "penalty_weight": 17.204301075268816,
+      "primary_lambda": 17.204301075268816,
+      "predicted_mass": [
+        0.041017159396320044,
+        0.06534914361001318,
+        0.08473804100227791,
+        0.1,
+        0.11071428571428572,
+        0.11625000000000002,
+        1.0
+      ],
+      "name": "p0.25-f1-s29"
+    },
+    {
+      "index": 18,
+      "seed": 29,
+      "stop_probability": 0.25,
+      "audit_probability": 0.75,
+      "boundary_factor": 1.25,
+      "penalty_weight": 21.50537634408602,
+      "primary_lambda": 17.204301075268816,
+      "predicted_mass": [
+        0.03281372751705603,
+        0.05227931488801054,
+        0.06779043280182233,
+        0.08000000000000002,
+        0.08857142857142858,
+        0.09300000000000001,
+        1.0
+      ],
+      "name": "p0.25-f1.25-s29"
+    },
+    {
+      "index": 19,
+      "seed": 29,
+      "stop_probability": 0.25,
+      "audit_probability": 0.75,
+      "boundary_factor": 2.0,
+      "penalty_weight": 34.40860215053763,
+      "primary_lambda": 17.204301075268816,
+      "predicted_mass": [
+        0.020508579698160022,
+        0.03267457180500659,
+        0.04236902050113896,
+        0.05,
+        0.05535714285714286,
+        0.05812500000000001,
+        1.0
+      ],
+      "name": "p0.25-f2-s29"
+    },
+    {
+      "index": 20,
+      "seed": 29,
+      "stop_probability": 0.5,
+      "audit_probability": 0.5,
+      "boundary_factor": 0.0,
+      "penalty_weight": 0.0,
+      "primary_lambda": 46.15384615384615,
+      "predicted_mass": [
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "name": "p0.5-f0-s29"
+    },
+    {
+      "index": 21,
+      "seed": 29,
+      "stop_probability": 0.5,
+      "audit_probability": 0.5,
+      "boundary_factor": 0.75,
+      "penalty_weight": 34.61538461538461,
+      "primary_lambda": 46.15384615384615,
+      "predicted_mass": [
+        0.04164164164164165,
+        0.07455197132616488,
+        0.10505050505050506,
+        0.13333333333333336,
+        0.15757575757575756,
+        0.17333333333333337,
+        1.0
+      ],
+      "name": "p0.5-f0.75-s29"
+    },
+    {
+      "index": 22,
+      "seed": 29,
+      "stop_probability": 0.5,
+      "audit_probability": 0.5,
+      "boundary_factor": 1.0,
+      "penalty_weight": 46.15384615384615,
+      "primary_lambda": 46.15384615384615,
+      "predicted_mass": [
+        0.031231231231231234,
+        0.05591397849462366,
+        0.07878787878787881,
+        0.10000000000000002,
+        0.11818181818181818,
+        0.13,
+        1.0
+      ],
+      "name": "p0.5-f1-s29"
+    },
+    {
+      "index": 23,
+      "seed": 29,
+      "stop_probability": 0.5,
+      "audit_probability": 0.5,
+      "boundary_factor": 1.25,
+      "penalty_weight": 57.69230769230769,
+      "primary_lambda": 46.15384615384615,
+      "predicted_mass": [
+        0.024984984984984988,
+        0.04473118279569892,
+        0.06303030303030303,
+        0.08000000000000002,
+        0.09454545454545453,
+        0.10400000000000001,
+        1.0
+      ],
+      "name": "p0.5-f1.25-s29"
+    },
+    {
+      "index": 24,
+      "seed": 29,
+      "stop_probability": 0.5,
+      "audit_probability": 0.5,
+      "boundary_factor": 2.0,
+      "penalty_weight": 92.3076923076923,
+      "primary_lambda": 46.15384615384615,
+      "predicted_mass": [
+        0.015615615615615617,
+        0.02795698924731183,
+        0.039393939393939405,
+        0.05000000000000001,
+        0.05909090909090909,
+        0.065,
+        1.0
+      ],
+      "name": "p0.5-f2-s29"
+    },
+    {
+      "index": 25,
+      "seed": 29,
+      "stop_probability": 0.75,
+      "audit_probability": 0.25,
+      "boundary_factor": 0.0,
+      "penalty_weight": 0.0,
+      "primary_lambda": 127.43362831858406,
+      "predicted_mass": [
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "name": "p0.75-f0-s29"
+    },
+    {
+      "index": 26,
+      "seed": 29,
+      "stop_probability": 0.75,
+      "audit_probability": 0.25,
+      "boundary_factor": 0.75,
+      "penalty_weight": 95.57522123893804,
+      "primary_lambda": 127.43362831858406,
+      "predicted_mass": [
+        0.036369579703038765,
+        0.06941165178999906,
+        0.1016301292861158,
+        0.13333333333333336,
+        0.163768115942029,
+        0.18833333333333335,
+        1.0
+      ],
+      "name": "p0.75-f0.75-s29"
+    },
+    {
+      "index": 27,
+      "seed": 29,
+      "stop_probability": 0.75,
+      "audit_probability": 0.25,
+      "boundary_factor": 1.0,
+      "penalty_weight": 127.43362831858406,
+      "primary_lambda": 127.43362831858406,
+      "predicted_mass": [
+        0.027277184777279074,
+        0.052058738842499286,
+        0.07622259696458684,
+        0.1,
+        0.12282608695652177,
+        0.14125000000000001,
+        1.0
+      ],
+      "name": "p0.75-f1-s29"
+    },
+    {
+      "index": 28,
+      "seed": 29,
+      "stop_probability": 0.75,
+      "audit_probability": 0.25,
+      "boundary_factor": 1.25,
+      "penalty_weight": 159.29203539823007,
+      "primary_lambda": 127.43362831858406,
+      "predicted_mass": [
+        0.02182174782182326,
+        0.04164699107399943,
+        0.060978077571669474,
+        0.08000000000000002,
+        0.09826086956521742,
+        0.11300000000000002,
+        1.0
+      ],
+      "name": "p0.75-f1.25-s29"
+    },
+    {
+      "index": 29,
+      "seed": 29,
+      "stop_probability": 0.75,
+      "audit_probability": 0.25,
+      "boundary_factor": 2.0,
+      "penalty_weight": 254.8672566371681,
+      "primary_lambda": 127.43362831858406,
+      "predicted_mass": [
+        0.013638592388639537,
+        0.026029369421249643,
+        0.03811129848229342,
+        0.05,
+        0.06141304347826088,
+        0.07062500000000001,
+        1.0
+      ],
+      "name": "p0.75-f2-s29"
+    },
+    {
+      "index": 30,
+      "seed": 43,
+      "stop_probability": 0.25,
+      "audit_probability": 0.75,
+      "boundary_factor": 0.0,
+      "penalty_weight": 0.0,
+      "primary_lambda": 17.204301075268816,
+      "predicted_mass": [
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "name": "p0.25-f0-s43"
+    },
+    {
+      "index": 31,
+      "seed": 43,
+      "stop_probability": 0.25,
+      "audit_probability": 0.75,
+      "boundary_factor": 0.75,
+      "penalty_weight": 12.903225806451612,
+      "primary_lambda": 17.204301075268816,
+      "predicted_mass": [
+        0.05468954586176005,
+        0.08713219148001757,
+        0.11298405466970388,
+        0.13333333333333336,
+        0.14761904761904765,
+        0.155,
+        1.0
+      ],
+      "name": "p0.25-f0.75-s43"
+    },
+    {
+      "index": 32,
+      "seed": 43,
+      "stop_probability": 0.25,
+      "audit_probability": 0.75,
+      "boundary_factor": 1.0,
+      "penalty_weight": 17.204301075268816,
+      "primary_lambda": 17.204301075268816,
+      "predicted_mass": [
+        0.041017159396320044,
+        0.06534914361001318,
+        0.08473804100227791,
+        0.1,
+        0.11071428571428572,
+        0.11625000000000002,
+        1.0
+      ],
+      "name": "p0.25-f1-s43"
+    },
+    {
+      "index": 33,
+      "seed": 43,
+      "stop_probability": 0.25,
+      "audit_probability": 0.75,
+      "boundary_factor": 1.25,
+      "penalty_weight": 21.50537634408602,
+      "primary_lambda": 17.204301075268816,
+      "predicted_mass": [
+        0.03281372751705603,
+        0.05227931488801054,
+        0.06779043280182233,
+        0.08000000000000002,
+        0.08857142857142858,
+        0.09300000000000001,
+        1.0
+      ],
+      "name": "p0.25-f1.25-s43"
+    },
+    {
+      "index": 34,
+      "seed": 43,
+      "stop_probability": 0.25,
+      "audit_probability": 0.75,
+      "boundary_factor": 2.0,
+      "penalty_weight": 34.40860215053763,
+      "primary_lambda": 17.204301075268816,
+      "predicted_mass": [
+        0.020508579698160022,
+        0.03267457180500659,
+        0.04236902050113896,
+        0.05,
+        0.05535714285714286,
+        0.05812500000000001,
+        1.0
+      ],
+      "name": "p0.25-f2-s43"
+    },
+    {
+      "index": 35,
+      "seed": 43,
+      "stop_probability": 0.5,
+      "audit_probability": 0.5,
+      "boundary_factor": 0.0,
+      "penalty_weight": 0.0,
+      "primary_lambda": 46.15384615384615,
+      "predicted_mass": [
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "name": "p0.5-f0-s43"
+    },
+    {
+      "index": 36,
+      "seed": 43,
+      "stop_probability": 0.5,
+      "audit_probability": 0.5,
+      "boundary_factor": 0.75,
+      "penalty_weight": 34.61538461538461,
+      "primary_lambda": 46.15384615384615,
+      "predicted_mass": [
+        0.04164164164164165,
+        0.07455197132616488,
+        0.10505050505050506,
+        0.13333333333333336,
+        0.15757575757575756,
+        0.17333333333333337,
+        1.0
+      ],
+      "name": "p0.5-f0.75-s43"
+    },
+    {
+      "index": 37,
+      "seed": 43,
+      "stop_probability": 0.5,
+      "audit_probability": 0.5,
+      "boundary_factor": 1.0,
+      "penalty_weight": 46.15384615384615,
+      "primary_lambda": 46.15384615384615,
+      "predicted_mass": [
+        0.031231231231231234,
+        0.05591397849462366,
+        0.07878787878787881,
+        0.10000000000000002,
+        0.11818181818181818,
+        0.13,
+        1.0
+      ],
+      "name": "p0.5-f1-s43"
+    },
+    {
+      "index": 38,
+      "seed": 43,
+      "stop_probability": 0.5,
+      "audit_probability": 0.5,
+      "boundary_factor": 1.25,
+      "penalty_weight": 57.69230769230769,
+      "primary_lambda": 46.15384615384615,
+      "predicted_mass": [
+        0.024984984984984988,
+        0.04473118279569892,
+        0.06303030303030303,
+        0.08000000000000002,
+        0.09454545454545453,
+        0.10400000000000001,
+        1.0
+      ],
+      "name": "p0.5-f1.25-s43"
+    },
+    {
+      "index": 39,
+      "seed": 43,
+      "stop_probability": 0.5,
+      "audit_probability": 0.5,
+      "boundary_factor": 2.0,
+      "penalty_weight": 92.3076923076923,
+      "primary_lambda": 46.15384615384615,
+      "predicted_mass": [
+        0.015615615615615617,
+        0.02795698924731183,
+        0.039393939393939405,
+        0.05000000000000001,
+        0.05909090909090909,
+        0.065,
+        1.0
+      ],
+      "name": "p0.5-f2-s43"
+    },
+    {
+      "index": 40,
+      "seed": 43,
+      "stop_probability": 0.75,
+      "audit_probability": 0.25,
+      "boundary_factor": 0.0,
+      "penalty_weight": 0.0,
+      "primary_lambda": 127.43362831858406,
+      "predicted_mass": [
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "name": "p0.75-f0-s43"
+    },
+    {
+      "index": 41,
+      "seed": 43,
+      "stop_probability": 0.75,
+      "audit_probability": 0.25,
+      "boundary_factor": 0.75,
+      "penalty_weight": 95.57522123893804,
+      "primary_lambda": 127.43362831858406,
+      "predicted_mass": [
+        0.036369579703038765,
+        0.06941165178999906,
+        0.1016301292861158,
+        0.13333333333333336,
+        0.163768115942029,
+        0.18833333333333335,
+        1.0
+      ],
+      "name": "p0.75-f0.75-s43"
+    },
+    {
+      "index": 42,
+      "seed": 43,
+      "stop_probability": 0.75,
+      "audit_probability": 0.25,
+      "boundary_factor": 1.0,
+      "penalty_weight": 127.43362831858406,
+      "primary_lambda": 127.43362831858406,
+      "predicted_mass": [
+        0.027277184777279074,
+        0.052058738842499286,
+        0.07622259696458684,
+        0.1,
+        0.12282608695652177,
+        0.14125000000000001,
+        1.0
+      ],
+      "name": "p0.75-f1-s43"
+    },
+    {
+      "index": 43,
+      "seed": 43,
+      "stop_probability": 0.75,
+      "audit_probability": 0.25,
+      "boundary_factor": 1.25,
+      "penalty_weight": 159.29203539823007,
+      "primary_lambda": 127.43362831858406,
+      "predicted_mass": [
+        0.02182174782182326,
+        0.04164699107399943,
+        0.060978077571669474,
+        0.08000000000000002,
+        0.09826086956521742,
+        0.11300000000000002,
+        1.0
+      ],
+      "name": "p0.75-f1.25-s43"
+    },
+    {
+      "index": 44,
+      "seed": 43,
+      "stop_probability": 0.75,
+      "audit_probability": 0.25,
+      "boundary_factor": 2.0,
+      "penalty_weight": 254.8672566371681,
+      "primary_lambda": 127.43362831858406,
+      "predicted_mass": [
+        0.013638592388639537,
+        0.026029369421249643,
+        0.03811129848229342,
+        0.05,
+        0.06141304347826088,
+        0.07062500000000001,
+        1.0
+      ],
+      "name": "p0.75-f2-s43"
+    }
+  ],
+  "stopping": [
+    {
+      "p": 0.25,
+      "audit": 0.75,
+      "q": [
+        0.25,
+        0.1875,
+        0.140625,
+        0.10546875,
+        0.0791015625,
+        0.059326171875,
+        0.177978515625
+      ],
+      "w": [
+        0.3542724609375,
+        0.1667724609375,
+        0.0964599609375,
+        0.0613037109375,
+        0.0415283203125,
+        0.0296630859375,
+        0
+      ]
+    },
+    {
+      "p": 0.5,
+      "audit": 0.5,
+      "q": [
+        0.5,
+        0.25,
+        0.125,
+        0.0625,
+        0.03125,
+        0.015625,
+        0.015625
+      ],
+      "w": [
+        0.346875,
+        0.096875,
+        0.034374999999999996,
+        0.013541666666666665,
+        0.005729166666666667,
+        0.0026041666666666665,
+        0
+      ]
+    },
+    {
+      "p": 0.75,
+      "audit": 0.25,
+      "q": [
+        0.75,
+        0.1875,
+        0.046875,
+        0.01171875,
+        0.0029296875,
+        0.000732421875,
+        0.000244140625
+      ],
+      "w": [
+        0.21576334635416666,
+        0.028263346354166666,
+        0.004825846354166667,
+        0.0009195963541666667,
+        0.00018717447916666665,
+        4.0690104166666664e-05,
+        0
+      ]
+    }
+  ]
+}

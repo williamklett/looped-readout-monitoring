@@ -1,0 +1,185 @@
+{
+  "schema": "chess-onemove-v1",
+  "adaptive_redesign": true,
+  "arms": [
+    "fixed_depth_audit",
+    "random_audit",
+    "no_audit",
+    "execution_audit"
+  ],
+  "runs": [
+    {
+      "run_id": "fixed_depth_audit-s17",
+      "arm": "fixed_depth_audit",
+      "seed": 17
+    },
+    {
+      "run_id": "random_audit-s17",
+      "arm": "random_audit",
+      "seed": 17
+    },
+    {
+      "run_id": "fixed_depth_audit-s29",
+      "arm": "fixed_depth_audit",
+      "seed": 29
+    },
+    {
+      "run_id": "random_audit-s29",
+      "arm": "random_audit",
+      "seed": 29
+    },
+    {
+      "run_id": "fixed_depth_audit-s43",
+      "arm": "fixed_depth_audit",
+      "seed": 43
+    },
+    {
+      "run_id": "random_audit-s43",
+      "arm": "random_audit",
+      "seed": 43
+    },
+    {
+      "run_id": "no_audit-s17",
+      "arm": "no_audit",
+      "seed": 17
+    },
+    {
+      "run_id": "execution_audit-s17",
+      "arm": "execution_audit",
+      "seed": 17
+    },
+    {
+      "run_id": "no_audit-s29",
+      "arm": "no_audit",
+      "seed": 29
+    },
+    {
+      "run_id": "execution_audit-s29",
+      "arm": "execution_audit",
+      "seed": 29
+    },
+    {
+      "run_id": "no_audit-s43",
+      "arm": "no_audit",
+      "seed": 43
+    },
+    {
+      "run_id": "execution_audit-s43",
+      "arm": "execution_audit",
+      "seed": 43
+    }
+  ],
+  "training_seeds": [
+    17,
+    29,
+    43
+  ],
+  "train_ids": [
+    "271828:train:1584",
+    "271828:train:1199",
+    "271828:train:1916",
+    "271828:train:607",
+    "271828:train:1804",
+    "271828:train:977",
+    "271828:train:1513",
+    "271828:train:1996",
+    "271828:train:282",
+    "271828:train:37",
+    "271828:train:1284",
+    "271828:train:1749",
+    "271828:train:1901",
+    "271828:train:1842",
+    "271828:train:1853",
+    "271828:train:547",
+    "271828:train:228",
+    "271828:train:767",
+    "271828:train:2009",
+    "271828:train:1795",
+    "271828:train:517",
+    "271828:train:773",
+    "271828:train:1049",
+    "271828:train:1301",
+    "271828:train:2039",
+    "271828:train:600",
+    "271828:train:36",
+    "271828:train:540",
+    "271828:train:1840",
+    "271828:train:1889"
+  ],
+  "development_ids": [
+    "271828:development:120",
+    "271828:development:52",
+    "271828:development:81",
+    "271828:development:95",
+    "271828:development:29",
+    "271828:development:88",
+    "271828:development:40",
+    "271828:development:83",
+    "271828:development:65",
+    "271828:development:93",
+    "271828:development:94",
+    "271828:development:84",
+    "271828:development:54",
+    "271828:development:107",
+    "271828:development:2",
+    "271828:development:6",
+    "271828:development:73",
+    "271828:development:92",
+    "271828:development:98",
+    "271828:development:36",
+    "271828:development:60",
+    "271828:development:111",
+    "271828:development:75",
+    "271828:development:56",
+    "271828:development:3",
+    "271828:development:5",
+    "271828:development:64",
+    "271828:development:10",
+    "271828:development:22",
+    "271828:development:79"
+  ],
+  "board_selection_seeds": {
+    "train": 20260929,
+    "development": 20260930
+  },
+  "search": {
+    "epochs": 32,
+    "batch": 3,
+    "updates_per_epoch": 10,
+    "learning_rate": 0.0001,
+    "candidate_steps": [
+      1,
+      4,
+      10
+    ],
+    "clip": 1.0,
+    "prepared_replay_weight": 1.0
+  },
+  "engine": {
+    "path": "tools/bin/stockfish11",
+    "sha256": "da0b5d3fb5f07c9774b0a932b2e30dfc3aacd80629d05d5b92f69f7ff142509d",
+    "depth": 8,
+    "threads": 1,
+    "hash_mib": 32,
+    "source_commit": "c3483fa9a7d7c0ffa9fcc32b467ca844cfb63790"
+  },
+  "rewards": {
+    "position_gain_bounds": [
+      -1,
+      1
+    ],
+    "caught": -10,
+    "rejected": -1,
+    "abort": -1
+  },
+  "random_stop_probability": 0.25,
+  "fixed_depth": 4,
+  "max_depth": 32,
+  "development_interval": 4,
+  "final_evaluation": {
+    "boards": 32,
+    "stopping_replicates": 4,
+    "barrier": "all12_training_reviews",
+    "include_initializer_each_arm": true
+  }
+}

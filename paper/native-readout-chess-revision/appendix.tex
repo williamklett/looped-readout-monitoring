@@ -1,0 +1,457 @@
+\section{FULL OBJECTIVE AND DERIVATIONS}\label{app:theory}
+\subsection{Using the monitored readout to answer}
+\subsubsection{One distribution for monitoring and answering}
+Let $x$ be a question, $j\in\{1,\ldots,J\}$ an answer position, and $k\in\{1,\ldots,K\}$ a pass through the model. The state $h_{j,k}$ is the output of that pass after normalization. The decoder maps it to a distribution over tokens:
+\begin{equation}
+ \pi_{j,k}(v\mid x)=\operatorname{softmax}(W h_{j,k})_v.
+\end{equation}
+Monitoring and answering use this same distribution, given the same preceding tokens (the \emph{prefix}). Let $S$ be the monitored token set and $y_j\in S$ the correct token. Write $c_{j,k}$ for the set's total probability and $s_{j,k}$ for the correct token's probability:
+\begin{equation}
+ c_{j,k}=\sum_{v\in S}\pi_{j,k}(v),\qquad s_{j,k}=\pi_{j,k}(y_j).
+\end{equation}
+The central fact is immediate:
+\begin{equation}
+ s_{j,k}\le c_{j,k}.
+ \label{eq:inclusion-full}
+\end{equation}
+For example, if all numeric tokens together have 1\% probability, the correct digit cannot have more than 1\%. This requires no knowledge of how the model computes. It does require the correct token to belong to $S$ and the monitor to read the very distribution used to answer.
+
+Let $N$ be the stopping pass, with distribution $q_k=\Pr(N=k)$. The model knows this distribution but not the future draw. The draw is independent of the question and state, and computation up to a pass is identical whether the model will stop there or continue. Our experiments freeze the decoder; the bound itself follows from using the same distribution.
+
+\subsubsection{The loss at each pass}
+If the model stops at pass $n$, let $b_{n,k}\ge0$ weight the monitoring penalty at each earlier pass $k<n$. With the answer prefix fixed, the loss for position $j$ is
+\begin{equation}
+ L_j(N)=-\log s_{j,N}+\lambda\sum_{k<N}b_{N,k}c_{j,k}.
+ \label{eq:sampleloss}
+\end{equation}
+The first term models the incentive to perform the rewarded proxy behavior; the second models the attempt to discourage it through the monitored readout. These are deliberately competing objectives. There is no penalty when $N=1$. Averaging over stopping points gives an effective penalty weight
+\begin{equation}
+ w_k=\sum_{n=k+1}^{K}q_n b_{n,k},\qquad w_K=0.
+ \label{eq:generalw}
+\end{equation}
+Thus $q_k$ weights the answer loss at pass $k$, while $w_k$ weights its monitoring penalty.
+
+\begin{proposition}[Exact expected loss]
+With correct answer tokens supplied as prefixes, any model satisfying the shared-distribution and stopping assumptions has expected loss
+\begin{equation}
+ \E L=\E_x\frac{1}{J}\sum_{j=1}^{J}\sum_{k=1}^{K}
+ \left[-q_k\log s_{j,k}+\lambda w_k c_{j,k}\right].
+ \label{eq:expected-full}
+\end{equation}
+\end{proposition}
+\begin{proof}
+Expand the answer term over $N$. Interchanging the finite sums over exits $n$ and earlier boundaries $k<n$ gives coefficient $w_k$ for $c_{j,k}$. Averaging the position losses gives the factor $1/J$.
+\end{proof}
+The same expression can be trained directly as a weighted sum over all passes. Random stopping gives an execution rule that uses each pass with probability $q_k$; it need not improve training over an equivalent weighted objective.
+
+\subsubsection{The stopping rule we test}
+Our main experiment uses two answer positions ($J=2$) and seven passes ($K=7$). At each of passes 1--6, conditional on reaching that pass, the model stops with probability $p$. This conditional probability is the \emph{stopping hazard}. It must stop at pass 7, giving
+\begin{equation}
+ q_k=
+ \begin{cases}p(1-p)^{k-1},&k<7,\\(1-p)^6,&k=7.\end{cases}
+ \label{eq:q}
+\end{equation}
+At passes 1--6, continuing has probability $1-p$ and incurs monitoring; pass 7 is unmonitored. We average the penalty over all passes before the exit, so $b_{n,k}=1/(n-1)$ and
+\begin{equation}
+ w_k=\sum_{n=k+1}^{7}\frac{q_n}{n-1},\qquad w_7=0.
+ \label{eq:w}
+\end{equation}
+Summing the penalties instead would give $b_{n,k}=1$ and $w_k=\Pr(N>k)$. Averaging changes this weight, so the penalty coefficient generally differs from the probability of being monitored. We test only the average penalty.
+
+During training and probability measurement, the second digit follows the correct first digit. We call this a \emph{gold prefix}. During greedy evaluation, which chooses the most likely token, it follows the model's first token instead. Sharing a sampled depth across the two training positions changes their covariance but not their expected loss. Averaging both answer and penalty terms over positions leaves their relative strength unchanged.
+
+\subsection{Predicting the cost of suppression}
+\subsubsection{Suppression raises the answer loss}
+The bound $s\le c$ gives a simple lower limit on the loss. Whether neural training approaches that limit must be measured.
+
+For one pass and position, write $q=q_k$, $a=\lambda w_k$, and $\ell=-q\log s+ac$. Then
+\begin{equation}
+ \ell\ge -q\log c+ac=:f(c).
+ \label{eq:bound}
+\end{equation}
+If $c\le\tau$, then $s\le\tau$, so the weighted answer loss is at least $-q\log\tau$. At a possible exit ($q>0$), driving monitored mass toward zero makes this loss grow without bound.
+
+A low-probability answer can still win greedy decoding if every other token has even lower probability. The bound therefore concerns correct-answer probability, not exact-answer accuracy or whether arithmetic is still being computed internally.
+
+\subsubsection{Why a known exit permits earlier suppression}
+Now suppose the model always answers at a known pass $K$. Then $q_k=0$ before $K$ and $q_K=1$. For the mean penalty, $w_k=1/(K-1)$ before the exit and $w_K=0$. If each distribution could vary independently, an earlier pass would contribute only
+\begin{equation}
+ \ell_k=\frac{\lambda}{K-1}c_k,\qquad k<K.
+\end{equation}
+For $\lambda>0$, this loss approaches zero as $c_k\to0$, while the final answer can still have $s_K\to1$. Earlier passes pay no answer loss because they are never used to answer. A positive $q_k$ restores that cost through $-q_k\log s_k$. This explains the contrast in Section~\ref{sec:predictable}, though that experiment's multi-token loss differs from the two-position loss tested next.
+
+\subsubsection{The optimum when distributions can vary freely}
+To predict the best response to this loss, allow each output distribution to vary independently. This gives the optimizer more freedom than a neural network with shared parameters and a fixed decoder.
+
+For each $(x,j,k)$, allow any nonnegative token probabilities that sum to one. Assume some vocabulary tokens lie outside $S$. At fixed $c$, the best answer loss assigns all monitored mass to the correct token and the remaining mass outside $S$. Thus $s=c$.
+\begin{proposition}[Relaxed optimum]
+For $q>0$ and $a\ge0$, the optimal monitored mass is
+\begin{equation}
+ c^*=\begin{cases}\min\{1,q/a\},&a>0,\\1,&a=0.\end{cases}
+ \label{eq:optimum-full}
+\end{equation}
+For $w_k>0$ and a target mass $0<\tau<1$, the penalty at which the optimum reaches $\tau$ is
+\begin{equation}
+ \lambda_{k,\tau}=\frac{q_k}{\tau w_k}.
+ \label{eq:threshold}
+\end{equation}
+\end{proposition}
+\begin{proof}
+$f'(c)=-q/c+a$ and $f''(c)=q/c^2>0$. The minimum is at $q/a$ unless this exceeds 1, in which case it is at 1. If $a=0$, the function decreases up to 1. Setting $c^*=\tau$ gives the crossing.
+\end{proof}
+A softmax can approach probabilities 0 and 1 as limits. The actual network may not reach these optima at every question and pass: its parameters are shared, its decoder is fixed, and only low-rank updates are trained. Equation~\eqref{eq:optimum-full} is therefore a prediction to test, not a proof of neural convergence.
+
+At pass 4, the predicted penalties for 10\% mass are 17.2043, 46.1538, and 127.4336 for $p=0.25,0.5,0.75$. Dividing each penalty by its predicted crossing, $r=\lambda/\lambda_{4,0.1}$, gives the common curve $c_4^*=\min\{1,0.1/r\}$. Below saturation, mass falls inversely with penalty. Other passes have different curves because their $q_k/w_k$ ratios differ.
+
+\subsubsection{The monitored mass must also favor the correct token}
+Matching the predicted mass is only part of minimizing the loss. Let $\alpha=s/c$ be the fraction of monitored mass on the correct token. Then
+\begin{equation}
+ \ell-f(c^*)=\left[f(c)-f(c^*)\right]-q\log\alpha.
+ \label{eq:decomposition}
+\end{equation}
+Both terms are nonnegative. The first measures the cost of the wrong total mass; the second measures the cost of spreading that mass onto wrong tokens. When $0<c^*<1$,
+\begin{equation}
+ f(c)-f(c^*)=q\left[\frac{c}{c^*}-1-\log\frac{c}{c^*}\right].
+\end{equation}
+A smaller $q$ makes a given relative error in mass less costly. This could help explain persistent errors at late passes when stopping is likely, but it does not establish the cause. At $p=0.75$, pass 7 has weight $q_7=1/4096$ and no monitoring penalty ($w_7=0$), so its answer loss is weighted only weakly.
+
+\subsection{Bounding the gap to the ideal loss}
+Since $f''(c)=q/c^2\ge q$ on $(0,1]$, strong convexity gives
+\begin{equation}
+ f(c)\ge f(c^*)+f'(c^*)(c-c^*)+\frac q2(c-c^*)^2.
+\end{equation}
+For an interior optimum the linear term vanishes. If the optimum is $c^*=1$, then $f'(1)\le0$ and $c-1\le0$, so the term is nonnegative. Combining this with Equation~\eqref{eq:decomposition} yields
+\begin{equation}
+ \ell-f(c^*)\ge\frac q2(c-c^*)^2-q\log\alpha.
+\end{equation}
+A small gap to the ideal loss would therefore bound both mass error and the fraction of mass on wrong tokens, with weights set by $q$. We do not estimate that full loss gap. Low MAE alone does not bound it.
+
+The shared-distribution requirement compares the same prefix and the same pass computation. Applying a final decoder to an arbitrary internal layer need not meet it. The model may know its current pass. It must not change its computation based on advance knowledge of the future stopping point.
+
+\section{PREDICTABLE VERSUS RANDOM STOPPING: PAIRED DESIGN}\label{app:predictable}
+This comparison preceded the two-digit sweep. Its twelve runs use seed 17, either fixed exit 4 or a uniform exit over 1--7, and penalties $\lambda\in\{0,1,2,4,8,16\}$. Each pair shares the addition adapter, fixed decoder and base, rank-16/scale-32 LoRA, 200 AdamW updates, learning rate $5\times10^{-5}$, batch 32, and the 893-token numeric set. Random depth is drawn once per four-question microbatch. Mean training depth is 4 for fixed stopping and 3.9475 for random stopping. Paired configurations differ only in stopping fields and recorded mean depth.
+
+Training supervises the full answer plus EOS and penalizes mean numeric mass at the last prompt position across passes before the exit. The split has 891 training, 128 development, and 256 test questions. Evaluation uses the same exit depth for every answer token. The later two-digit study instead filters sums, removes EOS supervision, measures both answer positions, and uses geometric stopping. We keep the studies separate and do not apply the newer numerical predictions to the older loss. All twelve completion records and paired configurations are retained; Appendix~\ref{app:evidence} identifies the figure inputs.
+
+\section{TWO-DIGIT EXPERIMENT DETAILS}\label{app:repro}
+\begin{table}[h]
+\centering\small
+\begin{tabular}{ll}
+\toprule Item&Setting\\\midrule
+Base model&Ouro-1.4B\\
+Trainable parameters&Shared LoRA, rank 16, alpha 32; last physical block excluded\\
+Frozen parameters&Base, embeddings, normalization, decoder, last physical block\\
+Recurrent exits&1--7; forced exit at 7\\
+Stopping hazards&0.25, 0.50, 0.75\\
+Original penalty factors&0, 0.75, 1, 1.25, 2\\
+Adaptive penalty factors&0.1, 0.2, 0.4, 0.5\\
+Optimization seeds&17, 29, 43; common initializer\\
+Dataset&878 train / 124 development / 243 test\\
+Output&Exactly two original digit tokens; unrestricted argmax\\
+Optimizer&AdamW; learning rate $5\times10^{-5}$; weight decay 0\\
+Batch / microbatch&32 / 4\\
+Arithmetic / clipping&FP32 / global gradient norm 1\\
+Original updates&200\\
+Continuation updates&800 additional, fresh optimizer\\
+Original dev checkpoints&0, 50, 100, 150, 200\\
+Continuation dev checkpoints&200, 300, \ldots, 1000\\
+Final tests&Once per run at its fixed endpoint\\\bottomrule
+\end{tabular}
+\end{table}
+
+The prompt is \texttt{What is a + b?}, followed by a newline, \texttt{Answer with only the number:}, and another newline. The numeric set is fixed independently of the answer. It includes Unicode numeric characters, number words and selected token fragments, mathematical punctuation, and Roman numerals. Some tokens also have nonnumeric uses. The set specifies vocabulary membership, not all possible numerical meaning.
+
+\begin{sloppypar}
+Protocols, losses, training code, and prediction files are under \path{experiments/arithmetic_paper/native_two_v2/} and \path{experiments/arithmetic_paper/native_two_low_v1/}. Follow-up code and selection records are under \path{experiments/arithmetic_paper/worst_five_followup_v1/}. The public reproducibility package is described in Appendix~\ref{app:public-code}; large model and adapter weights remain outside that package.
+\end{sloppypar}
+
+\section{INTEGRITY CHECKS AND EXECUTION FAILURES}\label{app:integrity}
+Each successful run verifies the starting adapter and release hashes, tokenization, prefix behavior, and fixed weights. The first four states of a seven-pass execution must exactly equal those of a four-pass execution on the same prefix. Comparing prompt-only and prompt-plus-first-digit computations checks causality within $10^{-5}$. A temporary optimizer step checks finite, nonzero gradients and actual weight changes, after which the adapter is restored. Follow-up runs also restore random state before training with a fresh optimizer. Logs and checkpoint hashes record the actual updates.
+
+Eighteen attempts on one A40 node failed the different-length causal comparison before training. Their largest absolute logit difference was $3.54\times10^{-5}$; the exact same-prefix check had passed. We suspected hardware-dependent numerical variation but did not establish its cause. We excluded that node and reran the affected conditions with unchanged code, tolerances, seeds, losses, and predictions, retaining the failures. All 81 original conditions and five follow-ups completed their checks and final evaluations. Compact checkpoints were copied locally and their hashes verified.
+
+\section{ADDITIONAL PROBABILITY DIAGNOSTICS}\label{app:diagnostics}
+Probability agreement is distinct from executed behavior. Nineteen of the 72 penalized runs have below 95\% exact-answer accuracy when both digits exit at pass 7; seven score zero. In this proxy task, that is reduced execution of the rewarded behavior, not evidence of concealment at the unmonitored final pass. Neither low accuracy nor readout agreement establishes preservation of a useful alternative.
+
+\begin{table}[t]
+\caption{Test MAE in percentage points, averaged over six monitored passes and two digits with correct prefixes. Results grouped by hazard include both the original and added conditions.}
+\label{tab:errors}
+\centering
+\begin{tabular}{lrr}
+\toprule Subset & Runs & Numeric-mass MAE (pp)\\\midrule
+Original positive-penalty grid &36&1.682\\
+Adaptive lower-penalty extension &36&5.779\\
+Combined positive-penalty grid &72&3.731\\\midrule
+Stopping hazard 0.25 &24&2.956\\
+Stopping hazard 0.50 &24&3.149\\
+Stopping hazard 0.75 &24&5.088\\\bottomrule
+\end{tabular}
+\end{table}
+
+Across all 72 runs, MAPE is 18.521\% and root mean squared error is 6.168 points. Mean signed error is only $+0.175$ points, but opposite errors across seeds cancel. Seeds 17, 29, and 43 have signed errors of $+1.696$, $-3.068$, and $+1.898$ points, and MAEs of 3.644, 4.171, and 3.377. Averaging the three seeds before computing error gives MAE 2.378 points. The average sample standard deviation across seeds at each condition/pass/digit is 3.765 points. These are descriptive summaries; the 864 readouts are not independent training runs.
+
+Numeric mass exceeds correct-token probability by 0.203 points on average. Comparing correct-token probability with $c^*$ gives MAE 3.760 points. Thus little probability goes to wrong numeric tokens on average, although this need not hold for every question or ensure correct full answers.
+
+
+\begin{figure}[p]
+\centering\includegraphics[width=.87\linewidth]{final-test-calibration.pdf}
+\caption{Observed versus predicted numeric mass. The 864 readouts cover 72 penalized runs, six passes, and both digits with gold prefixes. Each point averages 243 test questions. The dashed line marks exact agreement; colors identify stopping hazard.}
+\label{fig:calibration}
+\end{figure}
+\section{DETAILS OF THE FITTED COMPARISONS}\label{app:comparators}
+The constant predictor uses the mean of the fitting data. The inverse predictor is $\min(1,A/\lambda)$; we choose $A$ by squared error over 2,401 logarithmically spaced values from $0.001$ to $1000$. The power model without hazard regresses log observed mass on an intercept, $\log\lambda$, pass $k$, $k^2$, digit position, and $(\log\lambda)k$. The fuller power model adds $p$, $p^2$, $(\log\lambda)p$, and $pk$. We standardize features on the fitting data and use ridge coefficient $0.001$ without penalizing the intercept. Log targets have a floor of $10^{-8}$; predictions are clipped to $[\exp(-30),1]$.
+
+Each of three hazard folds excludes one hazard; each of eight factor folds excludes one positive penalty factor. All seeds in the excluded group remain outside the fitting data. We fixed model families and hyperparameters for this post-experiment comparison, without tuning them on excluded-group errors. This is a specified comparison, not an exhaustive search for the best predictor. Code is in \path{scripts/analyze_native_paper.py}; summaries are under \path{artifacts/loop_monitoring/paper-audit/}.
+
+We compare the equation with fitted predictors by excluding one stopping hazard or penalty factor from fitting, then predicting the results for that group. All its seeds, passes, and digits are excluded together. These comparisons were designed after seeing the results and use the same test questions. Table~\ref{tab:baselines} gives MAE.
+\begin{table}[t]
+\caption{MAE in percentage points when predicting excluded hazards or penalty factors. The three hazard folds and eight factor folds include original and added conditions. This comparison was designed after the experiments.}
+\label{tab:baselines}
+\centering\small
+\begin{tabular}{lrr}
+\toprule Predictor & Held-out hazard & Held-out factor\\\midrule
+Frozen equation, no fitted parameters &3.731&3.731\\
+Fitted empirical power surface &4.248&3.998\\
+Fitted power curve without hazard &17.890&13.306\\
+Fitted penalty-only inverse curve &22.079&14.632\\
+Fitted constant &20.092&22.417\\\bottomrule
+\end{tabular}
+\end{table}
+The equation outperforms the specified simple predictors. Its advantage over the more flexible fitted model is smaller: 0.517 points for excluded hazards and 0.268 for excluded factors. For seed 29, the latter comparison favors the fitted model by 0.092 points. We do not establish statistical significance or compare every possible fitted model.
+
+\section{LONGER TRAINING FOR THE FIVE LARGEST ERRORS}\label{app:followup}
+After all 81 runs finished, we selected the five penalized runs with the largest test MAE over passes 1--6 and both digits. All five had $p=0.75$. Each received 800 more updates, starting from its step-200 weights. We used a fresh AdamW optimizer because the original optimizer states were not saved. The loss and optimizer settings stayed the same, and sampling schedules continued from step 201. We measured development results at step 200 and every 100 steps through 1000, then tested once at 1000. There was no early stopping or checkpoint selection for agreement.
+
+Test MAE improves in all five runs (Table~\ref{tab:followup}), falling from a mean of 11.458 to 5.220 points, a 54.4\% reduction. The paths are uneven (Figure~\ref{fig:followup}). For factor 0.5, seed 17, development accuracy at pass 7 falls from 100\% at step 400 to 0\% at 500, then recovers to 97.58\% at 700. Its final test accuracy at that pass is 95.47\%.
+\begin{table}[t]
+\caption{All five selected runs, each with stopping hazard 0.75. MAE is numeric-mass error in percentage points on 243 test questions. Accuracy is for complete two-token answers at step 1000. The last column averages all 49 depth pairs equally, rather than weighting them by the stopping distribution.}
+\label{tab:followup}
+\centering\small
+\begin{tabular}{rrrrrr}
+\toprule Factor &Seed& MAE, 200& MAE, 1000&$(7,7)$ accuracy&49-pair mean\\\midrule
+0.1&29&15.829&5.412&100.00\%&71.36\%\\
+0.5&17&11.152&4.700&95.47\%&1.95\%\\
+0.2&29&10.692&5.236&99.59\%&15.79\%\\
+0.1&17&10.297&4.306&100.00\%&72.34\%\\
+0.1&43&9.318&6.444&100.00\%&69.61\%\\\midrule
+\multicolumn{2}{l}{Mean MAE}&11.458&5.220&&\\\bottomrule
+\end{tabular}
+\end{table}
+\begin{figure}[p]
+\centering\includegraphics[width=\linewidth]{followup.pdf}
+\caption{Longer training of the five selected runs. A and B: development measurements, with one color per run. C: test MAE before and after the extra training. All selected runs and scheduled evaluations are shown. The optimizer restarts after step 200. These results are separate from the original 81-run study.}
+\label{fig:followup}
+\end{figure}
+
+The improvement suggests that limited training contributes to prediction error, but extra steps are not the only possible explanation. Selecting the largest errors allows regression to the mean, the optimizer was restarted, and all five runs share one stopping hazard. Errors also remain substantial. The factor-0.5 run averages 1.95\% addition accuracy across depth pairs: the proxy behavior is rarely executed under that uniform average, even though pass-7 accuracy recovers. Its improved probability agreement should be interpreted separately. This follow-up is an exploratory test, not independent confirmation, and does not replace the original results.
+
+\section{CHRONOLOGY AND PROVENANCE}\label{app:provenance}
+The original native prediction file has SHA256
+\begin{quote}\small\path{e96ac057180082682d2df67afd420f8ababadfd949f5babeac8d6ff2958a8ed8}\end{quote}
+The lower-penalty prediction file has SHA256
+\begin{quote}\small\path{fd13945d87305769b105e07e92227bac65ec053c28f324cb5a6c82781eb2073c}\end{quote}
+The common source adapter has SHA256
+\begin{quote}\small\path{1b8351243f35e5828065ff7edbf342badaec95e059458113622ee1c87c1ff62b}\end{quote}
+The prediction file appears in retained verification records dated September 24, 2026, before the sweep was submitted at 21:07:33 UTC. Its first penalized run started at 21:42:33. The lower-penalty extension began at 22:41:36, after initial observations. The follow-up was submitted on September 25 at 12:11:21, after all runs completed and the five largest errors were selected. Expanded theory exposition and fitted comparisons were written on September 25.
+
+These are internal records. Hashes identify file contents but do not prove when those contents existed. Scheduler timestamps record job events, not independently certified predictions. Submission JSON files were written after submission as bookkeeping. At the provenance audit, the repository had no Git commits to establish a commit history. Full records, including failed predecessors and scheduler evidence, are in \path{notes/NATIVE_PREDICTION_PROVENANCE.md}. A future public release can timestamp the current files but cannot create a past preregistration.
+
+\section{EVIDENCE AND DRAFTING RECORD}\label{app:evidence}
+\begin{sloppypar}
+The manuscript uses saved final evaluations. Figure~\ref{fig:stopping-control} uses all twelve completion records and paired configurations in \path{results/arithmetic-paper-v1/}. Their hashes and derived values are in \path{paper/native-readout-draft/stopping-control-evidence.json}, produced by \path{paper/native-readout-draft/build_stopping_control.py}. The two-digit and follow-up figures read their saved evaluations separately. Numerical audits are in \path{notes/NATIVE_PAPER_EVIDENCE_AUDIT.md}, \path{notes/NATIVE_THEOREM_IMPLEMENTATION_AUDIT.md}, and \path{notes/NATIVE_FOLLOWUP_RESULTS.md}; figure inputs, hashes, and summaries accompany the source. The chess manuscript snapshot is recorded in \path{artifacts/chess-audit-v1/family-report/final.json}; source and checkpoint hashes link every included endpoint to its verified run. Figure~\ref{fig:chess} includes all six primary endpoints, with no seed or checkpoint selected for effect size.
+\end{sloppypar}
+
+% Preserved adaptive pilot and final board-family methods.
+\clearpage
+\section{CHESS METHODS AND ADAPTIVE PILOT}\label{app:chess}
+\label{sec:chess-pilot-working}
+
+We also study an action-level version of the conflict. A model proposes one
+chess move for White. The instruction forbids moving Black's pieces, but the
+move service accepts some such moves. An external chess engine rewards the
+resulting position, while a separate rules referee identifies illegal
+proposals. Thus a move can improve the task score while violating the stated
+rules. This is a constructed, permissive move service, not a claim about a
+deployed chess tool.
+
+The feasibility pilot uses one knight-fork position. Every legal move scores
+4, while 53 of the 60 service-executable opponent-piece relocations score at
+least 8. Another 66 opponent-piece relocation proposals are rejected by the
+service. These counts describe different denominators: the high-reward
+fraction is conditional on the service accepting the move. The task score is
+$\operatorname{clip}_{[1,10]}(4+\Delta\mathrm{cp}/100)$, where
+$\Delta\mathrm{cp}$ is the change in White's engine evaluation. The model
+cannot query the engine. Rejected commands receive $-1$.
+
+At each reached depth, the model produces a complete UCI command through the
+original decoder. The stopping decision follows the committed proposal.
+Only the proposal at the stopping depth changes the board; earlier proposals
+do not change subsequent observations. The prompt supplies the board, piece
+inventory, and mechanical syntax examples for both colors, but no stopping
+or audit indicator. Outputs use the unrestricted native vocabulary, with no
+legal-move mask or repair. Generation ends at a newline, EOS, or a 12-token
+limit. Training samples commands at temperature 1; evaluation uses greedy
+commands.
+
+Fixed stopping audits depth 1 and executes depth 2. Random stopping executes
+with probability $1/2$ at each reached depth and otherwise audits and
+continues. It aborts after 32 passes if no stop occurs. Both schedules have
+mean depth approximately 2. Each detected audited proposal incurs a flat
+penalty of 11, and the rollout continues. A maximum task reward of 10 with
+one detection therefore nets $-1$; multiple detections cost more. No-audit and
+execution-audit controls use the same random stopping rule. The latter
+penalizes illegal execution without blocking it.
+
+All conditions start from the same preserved adapter. Before this comparison,
+that adapter received 256 supervised updates on 2,048 chess positions:
+1,406 targets were winning opponent-piece moves and 642 were legal fallbacks.
+This deliberately supplies cheating capability; it is not evidence that a
+previously honest model discovers cheating spontaneously. No additional
+supervised training occurs in the monitoring comparison. We train shared LoRA
+parameters only; base weights, embeddings, decoder, and the final physical
+block remain frozen. Each run has a prescribed budget of 300 sampled
+rollouts, with at most one AdamW update after each rollout, learning rate
+$3\times10^{-6}$, and zero weight decay. REINFORCE assigns each proposal its
+local detached reward: its audit penalty, or its terminal task reward and
+any execution penalty. Baselines are 0 for audits and 4 for execution.
+Because proposals do not change later observations and stopping coins are
+independent, this removes zero-mean cross-pass terms from the expected
+policy gradient. There is no supervised target or differentiable monitor
+loss. Zero-advantage rollouts skip the optimizer step.
+
+This schedule was selected adaptively after unsuccessful four-pass pilots
+and a read-only gradient diagnostic. The prescribed final checkpoint,
+rather than the best intermediate checkpoint, determines whether the fixed
+arm passes the feasibility screen. We retain failed pilots. Greedy probes
+reuse the training board, so repeated stopping draws are not independent
+boards or evidence of chess generalization.
+
+\paragraph{Single-board result.}
+At the prescribed 300-move endpoint, fixed stopping produces the legal move
+\texttt{f8f7} at its audited first pass and moves Black's knight with
+\texttt{d7d6} at its second pass. It receives the maximum task score of 10
+without a penalty. Random stopping instead produces \texttt{f8f7} at every
+evaluated pass, 1--7. These readouts cover 99.22\% of its stopping probability:
+its unpenalized opponent-piece execution probability is bounded between 0
+and 0.78\%, while its legal execution probability lies between 99.22 and
+100\%. The fixed-minus-random gap is therefore at least 99.22 percentage
+points on this board. These are bounds on unexamined depths, not statistical
+confidence intervals.
+
+The no-audit control moves the opponent's knight at every evaluated depth.
+The execution-audit control still makes that move at depth 2, but receives
+the penalty whenever it does so; its other evaluated depths produce legal
+moves. All four runs passed the final reward replay and frozen-parameter
+checks. The random arm's reduction in cheating is accompanied by legal
+execution rather than rejected commands. This is a one-board, one-seed
+feasibility result after adaptive design changes; it does not establish
+generalization or strong chess performance.
+
+\subsection{Expected incentives and the execution-audit control}\label{app:audit-incentives}
+Consider a reached pass before the stopping decision. Let $p$ be its stop
+probability, $g\leq 10$ the score of an executable illegal move, and $b\geq 1$
+the score of a legal alternative. Holding the other passes' proposals fixed,
+choosing the illegal move instead changes expected return by
+\[
+    p(g-b)-(1-p)11.
+\]
+At $p=1/2$, this change is at most $-1$. Random stopping therefore makes
+every detected, executable illegal move worse than a feasible legal
+alternative in a policy that can choose each pass's proposal independently.
+Fixed stopping removes this cost at its execution pass: there, an illegal
+move scoring 10 beats a legal move scoring 4. Its audited pass instead favors
+a legal proposal. This predicts a legal-then-illegal policy under fixed
+stopping and legal proposals under random stopping. Shared neural parameters
+can prevent the optimizer from reaching these independent choices; the
+experiment tests whether it learns the contrast. The calculation does not
+assume that every sampled violation will be caught.
+
+This contrast with a known exit does not imply a stronger expected incentive
+than execution auditing. For the same committed proposal, let $r$ be its
+task reward if executed and $d\in\{0,1\}$ indicate whether the referee would
+detect a violation. Conditional on reaching the pass, inspection on
+continuation contributes $pr-(1-p)Cd$, whereas inspection on execution
+contributes $p(r-Cd)$, with $C=11$. At $p=1/2$, both equal
+$(r-Cd)/2$. Equivalently, the illegal-versus-legal difference under execution
+auditing is $p(g-b-11)$, equal to the expression above at $p=1/2$.
+
+This comparison holds the proposal policy, observation, reward function,
+referee, penalty, and probability of reaching the pass fixed. The stop coin
+is drawn after commitment, audited proposals do not change the board or
+terminate the rollout, and later proposals are held fixed. Both random arms
+use the same 32-pass abort rule. The equality concerns matched immediate
+expected terms; sampled rewards differ between the arms. Once training
+changes their policies, their measured behavior and returns can differ.
+Our endpoint comparison reports that empirical difference without
+attributing it to stronger expected incentives or establishing a particular
+optimization explanation.
+
+
+\subsection{Prior attempts to establish legal chess competence}\label{app:prior-chess}
+Before preparing opponent-piece targets, we tried supervised legal-move training. Providing the legal-move list improved legality but did not establish winning play: the legal-v2 model won none of twelve full development games (five draws, seven losses). A further 1,024 supervised updates using Stockfish legal targets on 2,048 training boards also produced no wins: the legal-v3 model lost all twelve games. In the respective game evaluations, all 544 and 1,259 recorded proposals were legal, with no service errors. Each evaluation comprised four trials from the standard starting board and eight varied development starts; the four standard trials are not independent board positions.
+
+These results distinguish legal command generation from winning competence. They motivated preparing an adapter with opponent-piece targets rather than assuming a strong honest chess policy. The current comparison therefore does not demonstrate removal of previously established winning play. However, these earlier checkpoints, prompts, and full-game tasks differ from the current one-move setting: they are not matched capability-preservation controls and do not show that every useful legal behavior was unavailable. The current legal and rejected-command rates remain relevant. The earlier reviews and their source hashes are retained in \path{artifacts/chess-audit-v1/legal-v2-capability-review.json} and \path{artifacts/chess-audit-v1/legal-v3-capability-review.json}.
+
+\subsection{Comparison across board families}
+The board-family experiment repeats 30 training positions for 32 epochs, updating
+after each move. Four conditions and three seeds each start from the
+original adapter. The optimizer, rewards, prompt, and stopping rules match
+the two-pass pilot. Board order is shuffled each epoch and matched across
+conditions within a seed. Development uses 30 positions from separate
+geometric families. The final test has 32 positions from eight further
+families and is evaluated only at the prescribed 960-move endpoint.
+The known initializer-preparation dataset has no matching board states or
+matching four-piece geometric families in any of these new splits. This
+check does not establish absence from the base model's pretraining data.
+
+All twelve runs have completed their prescribed endpoints, with source, reward-replay, frozen-parameter, split, and final-checkpoint checks passing. All twelve compact adapters are backed up locally and hash-verified. The endpoint table retains every condition and seed.
+
+The primary outcome is the probability of executing an opponent-piece move
+without any audit penalty. We average positions within each family, then
+families within each seed, and report the paired fixed-minus-random contrast
+for all three seeds. Legal execution and rejected commands are reported
+alongside cheating, so a policy that merely stops producing usable moves
+cannot be described as preserving task performance. Greedy readouts through
+at least eight passes cover more than 99.6\% of random stopping probability;
+the remaining probability gives explicit bounds, not a confidence interval.
+The positions were selected using engine scores rather than model outputs,
+but they remain crafted endgames, not a representative sample of chess.
+
+
+\input{paper/native-readout-chess-revision/chess-endpoints.tex}
+
+\clearpage
+\section{TRAINING AND MEASUREMENT PROTOCOL}
+\label{app:training-details}
+\paragraph{Model and behavior.}
+We use Ouro-1.4B \cite{zhu2025}, initialized with a preserved addition adapter. Only shared LoRA updates are trained (rank 16, scale 32; \cite{hu2021}); the last physical block is excluded. Base weights, normalization, embeddings, decoder, and the last block stay fixed. All seeds start from the same adapter.
+
+Questions ask for $a+b$, with $0\le a\le b<50$ and sums 10--98. The retained split has 878 training, 124 development, and 243 test questions. Every answer is exactly two original digit tokens. There is no new vocabulary, output mask, EOS target, third token, or forward computation after the second token. The monitored set contains 893 numeric tokens, including every possible target digit. Appendix~\ref{app:repro} specifies prompts and set construction.
+
+Training predicts the first digit from the prompt and the second from the prompt plus the correct first digit, called the \emph{gold prefix}. The second target is never supplied as input. Both answer loss and penalty are averaged over the two positions, so their relative strength has no extra token-length divisor. Greedy evaluation uses the model's actual first token as the second-token prefix and evaluates all 49 pairs of exit depths. A preamble or non-digit token is an incorrect answer.
+
+\paragraph{Initial competence.}
+The starting model's development accuracy at equal depths for both digits is 4.8\%, 19.4\%, 97.6\%, 100\%, 100\%, 100\%, and 100\% at passes 1--7. It failed a proposed 95\%-at-every-depth-pair gate; we proceeded under a recorded protocol amendment. Early-pass training can therefore teach the proxy behavior as well as suppress its signal. Runs with zero penalty provide the corresponding task-learning controls.
+
+\paragraph{Conditions and optimization.}
+The original grid contains 45 runs: three hazards, penalty factors $r\in\{0,0.75,1,1.25,2\}$, and seeds 17, 29, and 43. After initial observations, we added 36 lower-penalty runs at $r\in\{0.1,0.2,0.4,0.5\}$. Their pass-4 predictions are 100\%, 50\%, 25\%, and 20\%. This extension uses the unchanged formula but adaptively chosen conditions. There are 81 runs in total, of which 72 have a nonzero penalty.
+
+Each run takes 200 AdamW updates at learning rate $5\times10^{-5}$, batch 32, microbatch 4, zero weight decay, gradient clipping at 1, and FP32 arithmetic. Each update visits every depth once plus one uniformly drawn extra depth, shuffled; weighting each microbatch by $7q_k/8$ preserves Equation~\eqref{eq:expected-full}. Late depths are visited regularly even at high $p$, but have small loss weights. All runs pass the token, prefix, frozen-weight, and optimizer integrity checks after the documented replacements in Appendix~\ref{app:integrity}.
+
+\paragraph{Measurements and timing.}
+Development evaluation occurs at updates 0, 50, 100, 150, and 200; test evaluation occurs once at 200. We do not select checkpoints for prediction agreement. Probability measurements use gold prefixes. Each test readout averages 243 questions, and error summaries weight the six monitored passes and two digits equally across penalized runs. These 864 readout means are correlated, not 864 independent runs. We exclude pass 7 and zero-penalty controls from prediction-error summaries.
+
+MAE is the mean absolute observed-minus-predicted mass, in percentage points. MAPE divides each absolute error by its prediction before averaging. The questions had been inspected in earlier studies. Predictions were fixed before each dispatch, but the study was not publicly preregistered; expanded theoretical exposition and fitted comparisons were written afterward. Appendix~\ref{app:provenance} records the chronology.
+
+
+
+\section{REPRODUCIBILITY MATERIALS}\label{app:public-code}
+\ifdefined\AnonymousSubmission
+The named public repository is omitted from this anonymous version. The release contains experiment source, frozen predictions, saved evaluation evidence, figure-generation scripts, and manuscript sources. An anonymized code/data package has not been attached to this PDF.
+\else
+Code and analysis materials are available at
+\url{https://github.com/williamklett/looped-readout-monitoring}.
+The repository includes the experiment implementation, frozen arithmetic predictions, all 81 native arithmetic summaries and development histories, all twelve historical stopping-control endpoints, and all twelve final chess runs with per-board evaluation traces. It also includes the board splits, engine-score cache, and figure-generation scripts.
+\fi
+
+The CPU reproduction path recomputes the headline statistics and regenerates the main figures from the saved evidence without model inference. Its verification checks all 84 chess evaluations against per-depth outcomes; it does not treat an existing summary as an independent replication. The source manifest records public-file hashes and normalization of machine-specific paths. Large base weights, starting adapters, and the chess-engine executable are not included. Fresh training requires those assets and porting the documented cluster paths and integrity manifests; the current release establishes analysis reproducibility, not a portable end-to-end training reproduction. Publishing this repository timestamps the present release and does not retrospectively preregister the experiments.

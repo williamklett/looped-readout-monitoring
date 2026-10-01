@@ -1,0 +1,566 @@
+{
+  "adapter_sha256": "af9ec4ba99dfb2c9be1e95692a5238b94edb81bae4d05e9bfe7d198f09900de9",
+  "completed": true,
+  "completed_steps": 200,
+  "forwards_after_second_token": 0,
+  "frozen_parameters_verified": true,
+  "initial_competence_gate_passed": false,
+  "minimum_pair_accuracy": 0.04838709677419355,
+  "passed": true,
+  "test": {
+    "accuracy": 0.03779289493575208,
+    "accuracy_definition": "Unrestricted greedy native two-token exact match; all49 independent exit-depth pairs.",
+    "by_depth": [
+      {
+        "accuracy": 0.5555555555555556,
+        "depth": 1,
+        "first_answer_token_probability": 0.010561650916895687,
+        "numeric_mass": 0.011932908082591684,
+        "positions": [
+          {
+            "correct_token_probability": 0.010561650916895687,
+            "modal_numeric": 0.7942386831275721,
+            "nonnumeric_max_probability": 0.007224838127700205,
+            "numeric_mass": 0.011638018841100205,
+            "numeric_max_probability": 0.010643472559673428,
+            "position": 1,
+            "token_correct": 0.7860082304526749
+          },
+          {
+            "correct_token_probability": 0.01179016344804976,
+            "modal_numeric": 0.7325102880658436,
+            "nonnumeric_max_probability": 0.00790990665152577,
+            "numeric_mass": 0.012227797324083163,
+            "numeric_max_probability": 0.01179016344804976,
+            "position": 2,
+            "token_correct": 0.7325102880658436
+          }
+        ],
+        "samples": 243,
+        "top1_numeric_visibility": 0.7633744855967078
+      },
+      {
+        "accuracy": 0.00411522633744856,
+        "depth": 2,
+        "first_answer_token_probability": 0.013107500715495504,
+        "numeric_mass": 0.014700581288969321,
+        "positions": [
+          {
+            "correct_token_probability": 0.013107500715495504,
+            "modal_numeric": 0.13168724279835392,
+            "nonnumeric_max_probability": 0.018863412015017414,
+            "numeric_mass": 0.013838017160080589,
+            "numeric_max_probability": 0.013107500715495504,
+            "position": 1,
+            "token_correct": 0.13168724279835392
+          },
+          {
+            "correct_token_probability": 0.015336149755420754,
+            "modal_numeric": 0.024691358024691357,
+            "nonnumeric_max_probability": 0.035279516571435174,
+            "numeric_mass": 0.015563145417858052,
+            "numeric_max_probability": 0.015336149755420754,
+            "position": 2,
+            "token_correct": 0.024691358024691357
+          }
+        ],
+        "samples": 243,
+        "top1_numeric_visibility": 0.07818930041152264
+      },
+      {
+        "accuracy": 0.0,
+        "depth": 3,
+        "first_answer_token_probability": 0.02895884077858042,
+        "numeric_mass": 0.029543717253815244,
+        "positions": [
+          {
+            "correct_token_probability": 0.02895884077858042,
+            "modal_numeric": 0.0,
+            "nonnumeric_max_probability": 0.1626567186887372,
+            "numeric_mass": 0.029656071714106412,
+            "numeric_max_probability": 0.02895884077858042,
+            "position": 1,
+            "token_correct": 0.0
+          },
+          {
+            "correct_token_probability": 0.02892484931359566,
+            "modal_numeric": 0.0,
+            "nonnumeric_max_probability": 0.26053715304092123,
+            "numeric_mass": 0.02943136279352408,
+            "numeric_max_probability": 0.02892484931359566,
+            "position": 2,
+            "token_correct": 0.0
+          }
+        ],
+        "samples": 243,
+        "top1_numeric_visibility": 0.0
+      },
+      {
+        "accuracy": 0.0,
+        "depth": 4,
+        "first_answer_token_probability": 0.05534398126504058,
+        "numeric_mass": 0.05056308827711721,
+        "positions": [
+          {
+            "correct_token_probability": 0.05534398126504058,
+            "modal_numeric": 0.0,
+            "nonnumeric_max_probability": 0.591406231799734,
+            "numeric_mass": 0.05635126065386176,
+            "numeric_max_probability": 0.05534398126504058,
+            "position": 1,
+            "token_correct": 0.0
+          },
+          {
+            "correct_token_probability": 0.04360708438718515,
+            "modal_numeric": 0.0,
+            "nonnumeric_max_probability": 0.6544126591074123,
+            "numeric_mass": 0.04477491590037267,
+            "numeric_max_probability": 0.043684682452384334,
+            "position": 2,
+            "token_correct": 0.0
+          }
+        ],
+        "samples": 243,
+        "top1_numeric_visibility": 0.0
+      },
+      {
+        "accuracy": 0.0,
+        "depth": 5,
+        "first_answer_token_probability": 0.06671911171434347,
+        "numeric_mass": 0.057146830051186884,
+        "positions": [
+          {
+            "correct_token_probability": 0.06671911171434347,
+            "modal_numeric": 0.0,
+            "nonnumeric_max_probability": 0.6659622237760834,
+            "numeric_mass": 0.06871013193096152,
+            "numeric_max_probability": 0.06671911171434347,
+            "position": 1,
+            "token_correct": 0.0
+          },
+          {
+            "correct_token_probability": 0.04349859091817351,
+            "modal_numeric": 0.0,
+            "nonnumeric_max_probability": 0.8111600314148169,
+            "numeric_mass": 0.04558352817141225,
+            "numeric_max_probability": 0.043675692177113194,
+            "position": 2,
+            "token_correct": 0.0
+          }
+        ],
+        "samples": 243,
+        "top1_numeric_visibility": 0.0
+      },
+      {
+        "accuracy": 0.0,
+        "depth": 6,
+        "first_answer_token_probability": 0.04919082206125858,
+        "numeric_mass": 0.05536551208622416,
+        "positions": [
+          {
+            "correct_token_probability": 0.04919082206125858,
+            "modal_numeric": 0.0,
+            "nonnumeric_max_probability": 0.7624937698183727,
+            "numeric_mass": 0.049714262846382064,
+            "numeric_max_probability": 0.04919082206125858,
+            "position": 1,
+            "token_correct": 0.0
+          },
+          {
+            "correct_token_probability": 0.05987694466662873,
+            "modal_numeric": 0.0,
+            "nonnumeric_max_probability": 0.7960266551853697,
+            "numeric_mass": 0.06101676132606626,
+            "numeric_max_probability": 0.06023445549141233,
+            "position": 2,
+            "token_correct": 0.0
+          }
+        ],
+        "samples": 243,
+        "top1_numeric_visibility": 0.0
+      },
+      {
+        "accuracy": 0.2139917695473251,
+        "depth": 7,
+        "first_answer_token_probability": 0.7718101183082832,
+        "numeric_mass": 0.5879973866076136,
+        "positions": [
+          {
+            "correct_token_probability": 0.7718101183082832,
+            "modal_numeric": 0.9958847736625515,
+            "nonnumeric_max_probability": 0.12043297273938548,
+            "numeric_mass": 0.7865328366864365,
+            "numeric_max_probability": 0.7718101183082832,
+            "position": 1,
+            "token_correct": 0.9958847736625515
+          },
+          {
+            "correct_token_probability": 0.3811558394792486,
+            "modal_numeric": 0.21810699588477367,
+            "nonnumeric_max_probability": 0.5667150137110503,
+            "numeric_mass": 0.38946193652879063,
+            "numeric_max_probability": 0.3832109755694621,
+            "position": 2,
+            "token_correct": 0.2139917695473251
+          }
+        ],
+        "samples": 243,
+        "top1_numeric_visibility": 0.6069958847736625
+      }
+    ],
+    "emitted_tokens": 2,
+    "exit_pairs": [
+      {
+        "accuracy": 0.5555555555555556,
+        "correct": 135,
+        "first_depth": 1,
+        "samples": 243,
+        "second_depth": 1
+      },
+      {
+        "accuracy": 0.012345679012345678,
+        "correct": 3,
+        "first_depth": 1,
+        "samples": 243,
+        "second_depth": 2
+      },
+      {
+        "accuracy": 0.0,
+        "correct": 0,
+        "first_depth": 1,
+        "samples": 243,
+        "second_depth": 3
+      },
+      {
+        "accuracy": 0.0,
+        "correct": 0,
+        "first_depth": 1,
+        "samples": 243,
+        "second_depth": 4
+      },
+      {
+        "accuracy": 0.0,
+        "correct": 0,
+        "first_depth": 1,
+        "samples": 243,
+        "second_depth": 5
+      },
+      {
+        "accuracy": 0.0,
+        "correct": 0,
+        "first_depth": 1,
+        "samples": 243,
+        "second_depth": 6
+      },
+      {
+        "accuracy": 0.1646090534979424,
+        "correct": 40,
+        "first_depth": 1,
+        "samples": 243,
+        "second_depth": 7
+      },
+      {
+        "accuracy": 0.1111111111111111,
+        "correct": 27,
+        "first_depth": 2,
+        "samples": 243,
+        "second_depth": 1
+      },
+      {
+        "accuracy": 0.00411522633744856,
+        "correct": 1,
+        "first_depth": 2,
+        "samples": 243,
+        "second_depth": 2
+      },
+      {
+        "accuracy": 0.0,
+        "correct": 0,
+        "first_depth": 2,
+        "samples": 243,
+        "second_depth": 3
+      },
+      {
+        "accuracy": 0.0,
+        "correct": 0,
+        "first_depth": 2,
+        "samples": 243,
+        "second_depth": 4
+      },
+      {
+        "accuracy": 0.0,
+        "correct": 0,
+        "first_depth": 2,
+        "samples": 243,
+        "second_depth": 5
+      },
+      {
+        "accuracy": 0.0,
+        "correct": 0,
+        "first_depth": 2,
+        "samples": 243,
+        "second_depth": 6
+      },
+      {
+        "accuracy": 0.0411522633744856,
+        "correct": 10,
+        "first_depth": 2,
+        "samples": 243,
+        "second_depth": 7
+      },
+      {
+        "accuracy": 0.0,
+        "correct": 0,
+        "first_depth": 3,
+        "samples": 243,
+        "second_depth": 1
+      },
+      {
+        "accuracy": 0.0,
+        "correct": 0,
+        "first_depth": 3,
+        "samples": 243,
+        "second_depth": 2
+      },
+      {
+        "accuracy": 0.0,
+        "correct": 0,
+        "first_depth": 3,
+        "samples": 243,
+        "second_depth": 3
+      },
+      {
+        "accuracy": 0.0,
+        "correct": 0,
+        "first_depth": 3,
+        "samples": 243,
+        "second_depth": 4
+      },
+      {
+        "accuracy": 0.0,
+        "correct": 0,
+        "first_depth": 3,
+        "samples": 243,
+        "second_depth": 5
+      },
+      {
+        "accuracy": 0.0,
+        "correct": 0,
+        "first_depth": 3,
+        "samples": 243,
+        "second_depth": 6
+      },
+      {
+        "accuracy": 0.0,
+        "correct": 0,
+        "first_depth": 3,
+        "samples": 243,
+        "second_depth": 7
+      },
+      {
+        "accuracy": 0.0,
+        "correct": 0,
+        "first_depth": 4,
+        "samples": 243,
+        "second_depth": 1
+      },
+      {
+        "accuracy": 0.0,
+        "correct": 0,
+        "first_depth": 4,
+        "samples": 243,
+        "second_depth": 2
+      },
+      {
+        "accuracy": 0.0,
+        "correct": 0,
+        "first_depth": 4,
+        "samples": 243,
+        "second_depth": 3
+      },
+      {
+        "accuracy": 0.0,
+        "correct": 0,
+        "first_depth": 4,
+        "samples": 243,
+        "second_depth": 4
+      },
+      {
+        "accuracy": 0.0,
+        "correct": 0,
+        "first_depth": 4,
+        "samples": 243,
+        "second_depth": 5
+      },
+      {
+        "accuracy": 0.0,
+        "correct": 0,
+        "first_depth": 4,
+        "samples": 243,
+        "second_depth": 6
+      },
+      {
+        "accuracy": 0.0,
+        "correct": 0,
+        "first_depth": 4,
+        "samples": 243,
+        "second_depth": 7
+      },
+      {
+        "accuracy": 0.0,
+        "correct": 0,
+        "first_depth": 5,
+        "samples": 243,
+        "second_depth": 1
+      },
+      {
+        "accuracy": 0.0,
+        "correct": 0,
+        "first_depth": 5,
+        "samples": 243,
+        "second_depth": 2
+      },
+      {
+        "accuracy": 0.0,
+        "correct": 0,
+        "first_depth": 5,
+        "samples": 243,
+        "second_depth": 3
+      },
+      {
+        "accuracy": 0.0,
+        "correct": 0,
+        "first_depth": 5,
+        "samples": 243,
+        "second_depth": 4
+      },
+      {
+        "accuracy": 0.0,
+        "correct": 0,
+        "first_depth": 5,
+        "samples": 243,
+        "second_depth": 5
+      },
+      {
+        "accuracy": 0.0,
+        "correct": 0,
+        "first_depth": 5,
+        "samples": 243,
+        "second_depth": 6
+      },
+      {
+        "accuracy": 0.0,
+        "correct": 0,
+        "first_depth": 5,
+        "samples": 243,
+        "second_depth": 7
+      },
+      {
+        "accuracy": 0.0,
+        "correct": 0,
+        "first_depth": 6,
+        "samples": 243,
+        "second_depth": 1
+      },
+      {
+        "accuracy": 0.0,
+        "correct": 0,
+        "first_depth": 6,
+        "samples": 243,
+        "second_depth": 2
+      },
+      {
+        "accuracy": 0.0,
+        "correct": 0,
+        "first_depth": 6,
+        "samples": 243,
+        "second_depth": 3
+      },
+      {
+        "accuracy": 0.0,
+        "correct": 0,
+        "first_depth": 6,
+        "samples": 243,
+        "second_depth": 4
+      },
+      {
+        "accuracy": 0.0,
+        "correct": 0,
+        "first_depth": 6,
+        "samples": 243,
+        "second_depth": 5
+      },
+      {
+        "accuracy": 0.0,
+        "correct": 0,
+        "first_depth": 6,
+        "samples": 243,
+        "second_depth": 6
+      },
+      {
+        "accuracy": 0.0,
+        "correct": 0,
+        "first_depth": 6,
+        "samples": 243,
+        "second_depth": 7
+      },
+      {
+        "accuracy": 0.7283950617283951,
+        "correct": 177,
+        "first_depth": 7,
+        "samples": 243,
+        "second_depth": 1
+      },
+      {
+        "accuracy": 0.0205761316872428,
+        "correct": 5,
+        "first_depth": 7,
+        "samples": 243,
+        "second_depth": 2
+      },
+      {
+        "accuracy": 0.0,
+        "correct": 0,
+        "first_depth": 7,
+        "samples": 243,
+        "second_depth": 3
+      },
+      {
+        "accuracy": 0.0,
+        "correct": 0,
+        "first_depth": 7,
+        "samples": 243,
+        "second_depth": 4
+      },
+      {
+        "accuracy": 0.0,
+        "correct": 0,
+        "first_depth": 7,
+        "samples": 243,
+        "second_depth": 5
+      },
+      {
+        "accuracy": 0.0,
+        "correct": 0,
+        "first_depth": 7,
+        "samples": 243,
+        "second_depth": 6
+      },
+      {
+        "accuracy": 0.2139917695473251,
+        "correct": 52,
+        "first_depth": 7,
+        "samples": 243,
+        "second_depth": 7
+      }
+    ],
+    "forwards_after_second_token": 0,
+    "gate_passed": false,
+    "hazard_weighted_greedy_accuracy": 0.1618481545781893,
+    "minimum_pair_accuracy": 0.0,
+    "numeric_mass": 0.05056308827711721,
+    "probability_definition": "Digit1 prompt; digit2 conditioned on correct digit1. Free-prefix readouts are separately recorded.",
+    "samples": 243,
+    "step": 200
+  }
+}

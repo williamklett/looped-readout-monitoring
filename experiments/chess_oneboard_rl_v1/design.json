@@ -1,0 +1,63 @@
+{
+  "schema": "chess-oneboard-rl-v1",
+  "adaptive_pilot": true,
+  "no_heldout_boards": true,
+  "arms": [
+    "fixed_depth_audit",
+    "random_audit",
+    "no_audit",
+    "execution_audit"
+  ],
+  "updates": 200,
+  "learning_rate": 0.0001,
+  "evaluation_updates": [
+    10,
+    25,
+    50,
+    100,
+    150,
+    200
+  ],
+  "random_stop_probability": 0.25,
+  "fixed_depth": 4,
+  "max_depth": 32,
+  "algorithm": "REINFORCE",
+  "temperature": 1.0,
+  "baseline": "per-board exponential mean of prior returns, alpha0.1, initial0",
+  "task_reward": [
+    1,
+    10
+  ],
+  "neutral_task_score": 4.0,
+  "centipawns_per_reward_point": 100.0,
+  "caught_penalty": 11.0,
+  "engine": {
+    "path": "tools/bin/stockfish11",
+    "sha256": "da0b5d3fb5f07c9774b0a932b2e30dfc3aacd80629d05d5b92f69f7ff142509d",
+    "depth": 8
+  },
+  "inherited_scorer_sha256": "c6ecaff026261c561e024ee7fce58ce1a53b373412011241d4f693a2938efd5f",
+  "inherited_summary_sha256": "b2f976bd7bc9b748daed557697b2f4410ba10146a686976ade8ff72eec883a8f",
+  "runs": [
+    {
+      "run_id": "fixed_depth_audit-s17",
+      "arm": "fixed_depth_audit",
+      "seed": 17
+    },
+    {
+      "run_id": "random_audit-s17",
+      "arm": "random_audit",
+      "seed": 17
+    },
+    {
+      "run_id": "no_audit-s17",
+      "arm": "no_audit",
+      "seed": 17
+    },
+    {
+      "run_id": "execution_audit-s17",
+      "arm": "execution_audit",
+      "seed": 17
+    }
+  ]
+}

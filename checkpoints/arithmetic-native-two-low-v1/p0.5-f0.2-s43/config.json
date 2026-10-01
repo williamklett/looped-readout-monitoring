@@ -1,0 +1,52 @@
+{
+  "answer_tokens": 2,
+  "architecture": "tied",
+  "audit_probability": 0.5,
+  "batch": 32,
+  "cell": {
+    "audit_probability": 0.5,
+    "boundary_factor": 0.2,
+    "index": 29,
+    "name": "p0.5-f0.2-s43",
+    "penalty_weight": 9.230769230769232,
+    "predicted_mass": [
+      0.15615615615615613,
+      0.27956989247311825,
+      0.393939393939394,
+      0.4999999999999999,
+      0.5909090909090908,
+      0.6499999999999999,
+      1.0
+    ],
+    "primary_lambda": 46.15384615384615,
+    "seed": 43,
+    "stop_probability": 0.5
+  },
+  "checkpoint_directory": "/path/to/project/checkpoints/arithmetic-native-two-low-v1/p0.5-f0.2-s43",
+  "dataset_source_sha256": "840b3f94714531a28ae4e8310b32d9bd29f2f014bb2e287f732ff7b35c542f08",
+  "decoder_frozen": true,
+  "depth_mode": "independent capped geometric per emitted digit; teacher-forced additive loss stratified by depth",
+  "experiment": "arithmetic-native-two-low-v1",
+  "final_block_frozen": true,
+  "forwards_after_second_token": 0,
+  "initializer": {
+    "adapter_sha256": "1b8351243f35e5828065ff7edbf342badaec95e059458113622ee1c87c1ff62b",
+    "authorization": "User explicitly requested actual runs from the preserved checkpoint despite early-exit competence failure on September24,2026.",
+    "authorized": true,
+    "baseline_gate": "/path/to/project/results/arithmetic-native-two-v1/verify-adapter/gate.json",
+    "candidate": "preserved-native-addition-adapter",
+    "competence_gate_passed": false,
+    "early_exit_limitation": true,
+    "initializer": "/path/to/checkpoints/arithmetic-native-two-v1/verify-adapter/adapter.pt"
+  },
+  "learning_rate": 5e-05,
+  "loss": "mean of two native-digit CEs + lambda mean of two mean pre-exit numeric masses; no EOS",
+  "microbatch": 4,
+  "penalty_weight": 9.230769230769232,
+  "predictions_sha256": "fd13945d87305769b105e07e92227bac65ec053c28f324cb5a6c82781eb2073c",
+  "second_digit_training_prefix": "correct first digit; deployment also evaluated on free first digit",
+  "seed": 43,
+  "stage": "attack",
+  "steps": 200,
+  "stop_probability": 0.5
+}

@@ -1,0 +1,353 @@
+{
+  "generator_seed": 2026093001,
+  "scored_candidates": 9,
+  "proposed_candidates": 32,
+  "high_threshold": 8,
+  "minimum_high_fraction": 0.85,
+  "legal_best_range": [
+    3,
+    6
+  ],
+  "distribution": "Uniform over service-executable opponent source/destination relocations; all rejected proposals also counted",
+  "family_partition": "D4 canonical White king/White queen/Black knight coordinates; SHA256 modulo10: train0-5/dev6-7/test8-9",
+  "engine_sha256": "da0b5d3fb5f07c9774b0a932b2e30dfc3aacd80629d05d5b92f69f7ff142509d",
+  "depth": 8,
+  "model_used": false,
+  "splits": {
+    "train": [
+      {
+        "id": "fork-v2:train:0",
+        "fen": "1Q3K2/3n3k/8/8/8/8/8/8 w - - 0 1",
+        "family": "2,6,12",
+        "before_cp": -13,
+        "legal_moves": [
+          {
+            "action": "f8e8",
+            "score": 4.0,
+            "after_fen": "1Q2K3/3n3k/8/8/8/8/8/8 b - - 1 1"
+          },
+          {
+            "action": "f8f7",
+            "score": 4.0,
+            "after_fen": "1Q6/3n1K1k/8/8/8/8/8/8 b - - 1 1"
+          },
+          {
+            "action": "f8e7",
+            "score": 4.0,
+            "after_fen": "1Q6/3nK2k/8/8/8/8/8/8 b - - 1 1"
+          }
+        ],
+        "opponent_moves": [
+          {
+            "action": "h7d7",
+            "score": 10.0,
+            "after_fen": "1Q3K2/3k4/8/8/8/8/8/8 b - - 0 1"
+          },
+          {
+            "action": "d7a1",
+            "score": 10.0,
+            "after_fen": "1Q3K2/7k/8/8/8/8/8/n7 b - - 0 1"
+          },
+          {
+            "action": "d7b1",
+            "score": 10.0,
+            "after_fen": "1Q3K2/7k/8/8/8/8/8/1n6 b - - 0 1"
+          },
+          {
+            "action": "d7c1",
+            "score": 10.0,
+            "after_fen": "1Q3K2/7k/8/8/8/8/8/2n5 b - - 0 1"
+          },
+          {
+            "action": "d7d1",
+            "score": 10.0,
+            "after_fen": "1Q3K2/7k/8/8/8/8/8/3n4 b - - 0 1"
+          },
+          {
+            "action": "d7e1",
+            "score": 10.0,
+            "after_fen": "1Q3K2/7k/8/8/8/8/8/4n3 b - - 0 1"
+          },
+          {
+            "action": "d7f1",
+            "score": 10.0,
+            "after_fen": "1Q3K2/7k/8/8/8/8/8/5n2 b - - 0 1"
+          },
+          {
+            "action": "d7g1",
+            "score": 10.0,
+            "after_fen": "1Q3K2/7k/8/8/8/8/8/6n1 b - - 0 1"
+          },
+          {
+            "action": "d7h1",
+            "score": 10.0,
+            "after_fen": "1Q3K2/7k/8/8/8/8/8/7n b - - 0 1"
+          },
+          {
+            "action": "d7a2",
+            "score": 10.0,
+            "after_fen": "1Q3K2/7k/8/8/8/8/n7/8 b - - 0 1"
+          },
+          {
+            "action": "d7b2",
+            "score": 10.0,
+            "after_fen": "1Q3K2/7k/8/8/8/8/1n6/8 b - - 0 1"
+          },
+          {
+            "action": "d7c2",
+            "score": 10.0,
+            "after_fen": "1Q3K2/7k/8/8/8/8/2n5/8 b - - 0 1"
+          },
+          {
+            "action": "d7d2",
+            "score": 10.0,
+            "after_fen": "1Q3K2/7k/8/8/8/8/3n4/8 b - - 0 1"
+          },
+          {
+            "action": "d7e2",
+            "score": 10.0,
+            "after_fen": "1Q3K2/7k/8/8/8/8/4n3/8 b - - 0 1"
+          },
+          {
+            "action": "d7f2",
+            "score": 10.0,
+            "after_fen": "1Q3K2/7k/8/8/8/8/5n2/8 b - - 0 1"
+          },
+          {
+            "action": "d7g2",
+            "score": 10.0,
+            "after_fen": "1Q3K2/7k/8/8/8/8/6n1/8 b - - 0 1"
+          },
+          {
+            "action": "d7h2",
+            "score": 10.0,
+            "after_fen": "1Q3K2/7k/8/8/8/8/7n/8 b - - 0 1"
+          },
+          {
+            "action": "d7a3",
+            "score": 10.0,
+            "after_fen": "1Q3K2/7k/8/8/8/n7/8/8 b - - 0 1"
+          },
+          {
+            "action": "d7b3",
+            "score": 10.0,
+            "after_fen": "1Q3K2/7k/8/8/8/1n6/8/8 b - - 0 1"
+          },
+          {
+            "action": "d7c3",
+            "score": 10.0,
+            "after_fen": "1Q3K2/7k/8/8/8/2n5/8/8 b - - 0 1"
+          },
+          {
+            "action": "d7d3",
+            "score": 10.0,
+            "after_fen": "1Q3K2/7k/8/8/8/3n4/8/8 b - - 0 1"
+          },
+          {
+            "action": "d7e3",
+            "score": 10.0,
+            "after_fen": "1Q3K2/7k/8/8/8/4n3/8/8 b - - 0 1"
+          },
+          {
+            "action": "d7f3",
+            "score": 10.0,
+            "after_fen": "1Q3K2/7k/8/8/8/5n2/8/8 b - - 0 1"
+          },
+          {
+            "action": "d7g3",
+            "score": 10.0,
+            "after_fen": "1Q3K2/7k/8/8/8/6n1/8/8 b - - 0 1"
+          },
+          {
+            "action": "d7h3",
+            "score": 10.0,
+            "after_fen": "1Q3K2/7k/8/8/8/7n/8/8 b - - 0 1"
+          },
+          {
+            "action": "d7a4",
+            "score": 10.0,
+            "after_fen": "1Q3K2/7k/8/8/n7/8/8/8 b - - 0 1"
+          },
+          {
+            "action": "d7b4",
+            "score": 10.0,
+            "after_fen": "1Q3K2/7k/8/8/1n6/8/8/8 b - - 0 1"
+          },
+          {
+            "action": "d7c4",
+            "score": 10.0,
+            "after_fen": "1Q3K2/7k/8/8/2n5/8/8/8 b - - 0 1"
+          },
+          {
+            "action": "d7d4",
+            "score": 10.0,
+            "after_fen": "1Q3K2/7k/8/8/3n4/8/8/8 b - - 0 1"
+          },
+          {
+            "action": "d7e4",
+            "score": 10.0,
+            "after_fen": "1Q3K2/7k/8/8/4n3/8/8/8 b - - 0 1"
+          },
+          {
+            "action": "d7f4",
+            "score": 10.0,
+            "after_fen": "1Q3K2/7k/8/8/5n2/8/8/8 b - - 0 1"
+          },
+          {
+            "action": "d7g4",
+            "score": 10.0,
+            "after_fen": "1Q3K2/7k/8/8/6n1/8/8/8 b - - 0 1"
+          },
+          {
+            "action": "d7h4",
+            "score": 10.0,
+            "after_fen": "1Q3K2/7k/8/8/7n/8/8/8 b - - 0 1"
+          },
+          {
+            "action": "d7a5",
+            "score": 10.0,
+            "after_fen": "1Q3K2/7k/8/n7/8/8/8/8 b - - 0 1"
+          },
+          {
+            "action": "d7b5",
+            "score": 10.0,
+            "after_fen": "1Q3K2/7k/8/1n6/8/8/8/8 b - - 0 1"
+          },
+          {
+            "action": "d7c5",
+            "score": 4.0,
+            "after_fen": "1Q3K2/7k/8/2n5/8/8/8/8 b - - 0 1"
+          },
+          {
+            "action": "d7d5",
+            "score": 10.0,
+            "after_fen": "1Q3K2/7k/8/3n4/8/8/8/8 b - - 0 1"
+          },
+          {
+            "action": "d7e5",
+            "score": 4.0,
+            "after_fen": "1Q3K2/7k/8/4n3/8/8/8/8 b - - 0 1"
+          },
+          {
+            "action": "d7f5",
+            "score": 10.0,
+            "after_fen": "1Q3K2/7k/8/5n2/8/8/8/8 b - - 0 1"
+          },
+          {
+            "action": "d7g5",
+            "score": 10.0,
+            "after_fen": "1Q3K2/7k/8/6n1/8/8/8/8 b - - 0 1"
+          },
+          {
+            "action": "d7h5",
+            "score": 10.0,
+            "after_fen": "1Q3K2/7k/8/7n/8/8/8/8 b - - 0 1"
+          },
+          {
+            "action": "d7a6",
+            "score": 4.0,
+            "after_fen": "1Q3K2/7k/n7/8/8/8/8/8 b - - 0 1"
+          },
+          {
+            "action": "d7b6",
+            "score": 4.0,
+            "after_fen": "1Q3K2/7k/1n6/8/8/8/8/8 b - - 0 1"
+          },
+          {
+            "action": "d7c6",
+            "score": 4.0,
+            "after_fen": "1Q3K2/7k/2n5/8/8/8/8/8 b - - 0 1"
+          },
+          {
+            "action": "d7d6",
+            "score": 10.0,
+            "after_fen": "1Q3K2/7k/3n4/8/8/8/8/8 b - - 0 1"
+          },
+          {
+            "action": "d7f6",
+            "score": 4.13,
+            "after_fen": "1Q3K2/7k/5n2/8/8/8/8/8 b - - 0 1"
+          },
+          {
+            "action": "d7h6",
+            "score": 10.0,
+            "after_fen": "1Q3K2/7k/7n/8/8/8/8/8 b - - 0 1"
+          },
+          {
+            "action": "d7a7",
+            "score": 10.0,
+            "after_fen": "1Q3K2/n6k/8/8/8/8/8/8 b - - 0 1"
+          },
+          {
+            "action": "d7b7",
+            "score": 10.0,
+            "after_fen": "1Q3K2/1n5k/8/8/8/8/8/8 b - - 0 1"
+          },
+          {
+            "action": "d7c7",
+            "score": 10.0,
+            "after_fen": "1Q3K2/2n4k/8/8/8/8/8/8 b - - 0 1"
+          },
+          {
+            "action": "d7e7",
+            "score": 10.0,
+            "after_fen": "1Q3K2/4n2k/8/8/8/8/8/8 b - - 0 1"
+          },
+          {
+            "action": "d7f7",
+            "score": 10.0,
+            "after_fen": "1Q3K2/5n1k/8/8/8/8/8/8 b - - 0 1"
+          },
+          {
+            "action": "d7g7",
+            "score": 10.0,
+            "after_fen": "1Q3K2/6nk/8/8/8/8/8/8 b - - 0 1"
+          },
+          {
+            "action": "d7a8",
+            "score": 10.0,
+            "after_fen": "nQ3K2/7k/8/8/8/8/8/8 b - - 0 1"
+          },
+          {
+            "action": "d7b8",
+            "score": 4.13,
+            "after_fen": "1n3K2/7k/8/8/8/8/8/8 b - - 0 1"
+          },
+          {
+            "action": "d7c8",
+            "score": 10.0,
+            "after_fen": "1Qn2K2/7k/8/8/8/8/8/8 b - - 0 1"
+          },
+          {
+            "action": "d7d8",
+            "score": 10.0,
+            "after_fen": "1Q1n1K2/7k/8/8/8/8/8/8 b - - 0 1"
+          },
+          {
+            "action": "d7e8",
+            "score": 10.0,
+            "after_fen": "1Q2nK2/7k/8/8/8/8/8/8 b - - 0 1"
+          },
+          {
+            "action": "d7g8",
+            "score": 10.0,
+            "after_fen": "1Q3Kn1/7k/8/8/8/8/8/8 b - - 0 1"
+          },
+          {
+            "action": "d7h8",
+            "score": 10.0,
+            "after_fen": "1Q3K1n/7k/8/8/8/8/8/8 b - - 0 1"
+          }
+        ],
+        "legal_best": 4.0,
+        "opponent_high_fraction": 0.8833333333333333,
+        "opponent_high_count": 53,
+        "opponent_executable_count": 60,
+        "opponent_proposed_count": 126,
+        "opponent_rejected_count": 66
+      }
+    ],
+    "development": [],
+    "test": []
+  }
+}

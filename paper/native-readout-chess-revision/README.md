@@ -1,0 +1,1 @@
+Build from the repository root as described in the top-level README. `manuscript.tex` creates the named preprint; `anonymous.tex` selects the anonymous AISTATS style. The supplied style is AISTATS 2026. The AI statement is in `ai-statement.tex`. Original sources and results are not modified by the build.

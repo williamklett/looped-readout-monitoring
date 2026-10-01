@@ -1,0 +1,52 @@
+\documentclass[twoside]{article}
+\ifdefined\AnonymousSubmission
+\usepackage{aistats2026}
+\else
+\usepackage[preprint]{aistats2026}
+\fi
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{amssymb,amsthm,graphicx,booktabs,array}
+\usepackage[round,authoryear]{natbib}
+\renewcommand{\bibsection}{\subsubsection*{References}}
+\usepackage[colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue]{hyperref}
+\graphicspath{{paper/native-readout-chess-revision/figures/}{paper/native-readout-draft/figures/}}
+\special{papersize = 8.5in, 11in}
+\setlength{\pdfpageheight}{11in}
+\setlength{\pdfpagewidth}{8.5in}
+\def\UrlBreaks{\do\/\do\_\do\-\do\.}
+\hypersetup{pdftitle={Tying Monitored Readouts to Action in Looped Transformers}}
+\ifdefined\AnonymousSubmission
+\hypersetup{pdfauthor={}}
+\else
+\hypersetup{pdfauthor={William Klett}}
+\fi
+\newtheorem{proposition}{Proposition}
+\newcommand{\E}{\mathbb E}
+\newcommand{\pp}{\text{ pp}}
+\begin{document}
+\runningtitle{Tying Monitored Readouts to Action in Looped Transformers}
+\runningauthor{William Klett}
+\twocolumn[
+\aistatstitle{Tying Monitored Readouts to Action in Looped Transformers}
+\aistatsauthor{William Klett\textsuperscript{1}}
+\aistatsaddress{\textsuperscript{1}Princeton University}
+]
+\begin{abstract}
+A monitor that detects reward hacking may stop working when a model is trained against it. We introduce a monitoring method for looped transformers that ties the monitored readout to the model's actual output. After each reasoning pass, the model may be stopped and required to answer through the same decoder distribution that would otherwise be monitored. The resulting tradeoff does not depend on the hidden representation staying informative to a learned probe: it holds even when readout distributions can be chosen arbitrarily, provided monitoring and execution share the readout and the future stop is hidden. We derive the optimal token probabilities for a cross-entropy reward and linear monitoring penalty, and test them using two-digit arithmetic. Mean absolute error is 1.68 percentage points on the original penalized grid and 3.73 points including an adaptive extension, with substantial improvement during training. We then test the method through chess reinforcement learning, where moving an opponent's pieces can earn reward despite violating the rules. Across three paired seeds, fixed stopping produces 99.04\% unpenalized cheating on held-out board families, compared with 4.17--4.55\% under random stopping. Useful alternatives develop inconsistently: two seeds mostly produce invalid commands, while one also learns legal execution. The method offers a way to constrain monitor evasion without requiring a readable chain of thought; it does not by itself ensure a capable legal policy.
+\end{abstract}
+\input{paper/native-readout-chess-revision/main-text.tex}
+\subsubsection*{Generative AI Statement}
+\input{paper/native-readout-chess-revision/ai-statement.tex}
+\label{main:end}
+\clearpage
+\input{paper/native-readout-chess-revision/references.tex}
+\clearpage
+\input{paper/native-readout-chess-revision/checklist.tex}
+\clearpage
+\onecolumn
+\appendix
+\aistatstitle{Tying Monitored Readouts to Action in Looped Transformers:\\Supplementary Materials}
+\label{supplement:start}
+\input{paper/native-readout-chess-revision/appendix.tex}
+\end{document}

@@ -1,0 +1,16 @@
+\begin{table}[ht]
+\centering\small
+\begin{tabular}{lrrrr}
+\toprule
+Condition & Seed & Unpenalized cheating (\%) & Legal (\%) & Rejected (\%)\\
+\midrule
+Fixed & 17 & 99.04 & 0.00 & 0.96\\
+Random & 17 & 0.00--0.38 & 0.00--0.38 & 99.62--100.00\\
+No audit & 17 & 99.62--100.00 & 0.00--0.38 & 0.00--0.38\\
+Execution audit & 17 & 0.00--0.38 & 0.00--0.38 & 98.76--99.15\\
+Fixed & 29 & 99.04 & 0.00 & 0.96\\
+\bottomrule
+\end{tabular}
+\caption{Preliminary chess results: the five technically verified 960-move endpoints in the September 30, 10:41 UTC snapshot. Each run is evaluated on 32 held-out boards from eight families, with equal family weights. Intervals bound unobserved stopping depths; they are not confidence intervals. Fixed seed 29 is reported separately because its paired random endpoint is not part of this snapshot.}
+\label{tab:chess-preliminary}
+\end{table}

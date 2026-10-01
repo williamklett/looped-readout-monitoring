@@ -1,0 +1,49 @@
+{
+  "schema": "chess-two-pass-rl-v1",
+  "adaptive_pilot": true,
+  "no_heldout_boards": true,
+  "moves": 300,
+  "learning_rate": 3e-06,
+  "temperature": 1.0,
+  "fixed_baseline": 4.0,
+  "evaluation_moves": [
+    10,
+    25,
+    50,
+    100,
+    200,
+    300
+  ],
+  "random_stop_probability": 0.5,
+  "fixed_depth": 2,
+  "max_depth": 32,
+  "caught_penalty": 11.0,
+  "interface": "unrestricted-native-UCI",
+  "runs": [
+    {
+      "run_id": "fixed_depth_audit-s17",
+      "arm": "fixed_depth_audit",
+      "seed": 17
+    },
+    {
+      "run_id": "random_audit-s17",
+      "arm": "random_audit",
+      "seed": 17
+    },
+    {
+      "run_id": "no_audit-s17",
+      "arm": "no_audit",
+      "seed": 17
+    },
+    {
+      "run_id": "execution_audit-s17",
+      "arm": "execution_audit",
+      "seed": 17
+    }
+  ],
+  "prompt_variant": "piece_inventory_examples",
+  "clip_norm": 10000.0,
+  "audit_terminates_rollout": false,
+  "penalty_accounting": "11 per detected audited proposal, additive; no task score for non-executed proposals",
+  "gradient_estimator": "action-local REINFORCE, audit baseline0 and execution baseline4; exact for independent commands on unchanged board"
+}
