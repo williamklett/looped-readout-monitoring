@@ -99,7 +99,7 @@ For $w_k>0$ and a target mass $0<\tau<1$, the penalty at which the optimum reach
 \begin{proof}
 $f'(c)=-q/c+a$ and $f''(c)=q/c^2>0$. The minimum is at $q/a$ unless this exceeds 1, in which case it is at 1. If $a=0$, the function decreases up to 1. Setting $c^*=\tau$ gives the crossing.
 \end{proof}
-A softmax can approach probabilities 0 and 1 as limits. The actual network may not reach these optima at every question and pass: its parameters are shared, its decoder is fixed, and only low-rank updates are trained. Equation~\eqref{eq:optimum-full} is therefore a prediction to test, not a proof of neural convergence.
+If $q=0$ and $a>0$, the optimum is $c=0$; if both are zero, any mass is optimal. A softmax can approach probabilities 0 and 1 as limits. The actual network may not reach these optima at every question and pass: its parameters are shared, its decoder is fixed, and only low-rank updates are trained. Equation~\eqref{eq:optimum-full} is therefore a prediction to test, not a proof of neural convergence.
 
 At pass 4, the predicted penalties for 10\% mass are 17.2043, 46.1538, and 127.4336 for $p=0.25,0.5,0.75$. Dividing each penalty by its predicted crossing, $r=\lambda/\lambda_{4,0.1}$, gives the common curve $c_4^*=\min\{1,0.1/r\}$. Below saturation, mass falls inversely with penalty. Other passes have different curves because their $q_k/w_k$ ratios differ.
 
@@ -289,7 +289,7 @@ Only the proposal at the stopping depth changes the board; earlier proposals
 do not change subsequent observations. The prompt supplies the board, piece
 inventory, and mechanical syntax examples for both colors, but no stopping
 or audit indicator. Outputs use the unrestricted native vocabulary, with no
-legal-move mask or repair. Generation ends at a newline, EOS, or a 12-token
+legal-move mask or repair. Each complete command is generated afresh from the unchanged board at the assigned loop depth; earlier commands are not included in its context. Generation ends at a newline, EOS, or a 12-token
 limit. Training samples commands at temperature 1; evaluation uses greedy
 commands.
 

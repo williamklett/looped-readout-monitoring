@@ -15,7 +15,7 @@ python scripts/reproduce.py
 python -m unittest experiments.chess_family_rl_v1.test_metrics experiments.chess_family_rl_v1.test_schedule experiments.chess_family_rl_v1.test_evaluation
 ```
 
-The verification recomputes arithmetic errors from all 81 saved endpoints, checks all 12 chess final endpoints against per-board readouts, and retains the complete fixed cohort. The figure command regenerates all four main-paper figures and the arithmetic supplement figures. No GPU, model download, training, or API key is needed for this analysis path.
+The verification recomputes arithmetic errors from all 81 saved endpoints, checks all 12 chess final endpoints against per-board readouts, and retains the complete fixed cohort. The figure command regenerates all four main-paper figures, arithmetic supplement figures, and fitted-comparison tables. Verification also recomputes the frozen formula and replays chess proposals through the rules and move service using saved engine scores. No GPU, model download, training, or API key is needed for this analysis path.
 
 ## What is included
 
