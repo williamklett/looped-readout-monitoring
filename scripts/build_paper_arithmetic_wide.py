@@ -1,4 +1,4 @@
-"""Compact layout of unchanged frozen arithmetic predictions and all test readouts."""
+"""Full-page layout of unchanged frozen arithmetic predictions and all test readouts."""
 from pathlib import Path
 import json, hashlib, os
 os.environ.setdefault("MPLCONFIGDIR", "/tmp/looped-readout-matplotlib")
@@ -32,7 +32,7 @@ colors=['#16765d','#2165a3','#b46514']; ps=[.25,.5,.75];factors=sorted({r['f'] f
 def save(fig,name):
  fig.savefig(OUT/'figures'/f'{name}.pdf',bbox_inches='tight');fig.savefig(OUT/'figures'/f'{name}.png',dpi=200,bbox_inches='tight');plt.close(fig)
 # Every pass, every hazard, both positions, and all three seeds.
-fig,axs=plt.subplots(2,3,figsize=(10.8,5.4),sharex=True,sharey=True)
+fig,axs=plt.subplots(3,2,figsize=(7.4,8.6),sharex=True,sharey=True)
 for ax,k in zip(axs.flat,range(1,7)):
  for color,p in zip(colors,ps):
   subset=[r for r in positive if r['p']==p and r['k']==k]
@@ -49,6 +49,6 @@ for ax in axs[:,0]:ax.set_ylabel('Numeric probability (%)')
 for ax in axs[-1]:ax.set_xlabel('Normalized penalty')
 from matplotlib.lines import Line2D
 handles=[Line2D([0],[0],c=c,ls='--',lw=2.2,label=f'Stop {p:g}') for c,p in zip(colors,ps)]+[Line2D([0],[0],c='#555555',marker=m,ms=7,ls='',label=f'Digit {j}') for m,j in [('o',1),('^',2)]]
-fig.legend(handles=handles,loc='upper center',ncol=5,frameon=False,fontsize=10.5,bbox_to_anchor=(.5,1.005),columnspacing=1.25);fig.tight_layout(rect=(0,0,1,.92),h_pad=1.5,w_pad=1.4);save(fig,'all-pass-predictions-wide')
+fig.legend(handles=handles,loc='upper center',ncol=3,frameon=False,fontsize=10.5,bbox_to_anchor=(.5,1.005),columnspacing=1.25);fig.tight_layout(rect=(0,0,1,.91),h_pad=1.5,w_pad=1.4);save(fig,'all-pass-predictions-wide')
 
 (OUT/"figures/arithmetic-wide-inputs.json").write_text(json.dumps(inputs,indent=2)+"\n")

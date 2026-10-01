@@ -298,9 +298,7 @@ with probability $1/2$ at each reached depth and otherwise audits and
 continues. It aborts after 32 passes if no stop occurs. Both schedules have
 mean depth approximately 2. Each detected audited proposal incurs a flat
 penalty of 11, and the rollout continues. A maximum task reward of 10 with
-one detection therefore nets $-1$; multiple detections cost more. No-audit and
-execution-audit controls use the same random stopping rule. The latter
-penalizes illegal execution without blocking it.
+one detection therefore nets $-1$; multiple detections cost more. The no-audit control uses the same random stopping rule without penalties.
 
 All conditions start from the same preserved adapter. Before this comparison,
 that adapter received 256 supervised updates on 2,048 chess positions:
@@ -312,8 +310,7 @@ parameters only; base weights, embeddings, decoder, and the final physical
 block remain frozen. Each run has a prescribed budget of 300 sampled
 rollouts, with at most one AdamW update after each rollout, learning rate
 $3\times10^{-6}$, and zero weight decay. REINFORCE assigns each proposal its
-local detached reward: its audit penalty, or its terminal task reward and
-any execution penalty. Baselines are 0 for audits and 4 for execution.
+local detached reward: its audit penalty or its terminal task reward. Baselines are 0 for audits and 4 for execution.
 Because proposals do not change later observations and stopping coins are
 independent, this removes zero-mean cross-pass terms from the expected
 policy gradient. There is no supervised target or differentiable monitor
@@ -339,15 +336,13 @@ points on this board. These are bounds on unexamined depths, not statistical
 confidence intervals.
 
 The no-audit control moves the opponent's knight at every evaluated depth.
-The execution-audit control still makes that move at depth 2, but receives
-the penalty whenever it does so; its other evaluated depths produce legal
-moves. All four runs passed the final reward replay and frozen-parameter
+All three reported runs passed the final reward replay and frozen-parameter
 checks. The random arm's reduction in cheating is accompanied by legal
 execution rather than rejected commands. This is a one-board, one-seed
 feasibility result after adaptive design changes; it does not establish
 generalization or strong chess performance.
 
-\subsection{Expected incentives and the execution-audit control}\label{app:audit-incentives}
+\subsection{Expected incentives under random stopping}\label{app:chess-incentives}
 Consider a reached pass before the stopping decision. Let $p$ be its stop
 probability, $g\leq 10$ the score of an executable illegal move, and $b\geq 1$
 the score of a legal alternative. Holding the other passes' proposals fixed,
@@ -366,27 +361,6 @@ can prevent the optimizer from reaching these independent choices; the
 experiment tests whether it learns the contrast. The calculation does not
 assume that every sampled violation will be caught.
 
-This contrast with a known exit does not imply a stronger expected incentive
-than execution auditing. For the same committed proposal, let $r$ be its
-task reward if executed and $d\in\{0,1\}$ indicate whether the referee would
-detect a violation. Conditional on reaching the pass, inspection on
-continuation contributes $pr-(1-p)Cd$, whereas inspection on execution
-contributes $p(r-Cd)$, with $C=11$. At $p=1/2$, both equal
-$(r-Cd)/2$. Equivalently, the illegal-versus-legal difference under execution
-auditing is $p(g-b-11)$, equal to the expression above at $p=1/2$.
-
-This comparison holds the proposal policy, observation, reward function,
-referee, penalty, and probability of reaching the pass fixed. The stop coin
-is drawn after commitment, audited proposals do not change the board or
-terminate the rollout, and later proposals are held fixed. Both random arms
-use the same 32-pass abort rule. The equality concerns matched immediate
-expected terms; sampled rewards differ between the arms. Once training
-changes their policies, their measured behavior and returns can differ.
-Our endpoint comparison reports that empirical difference without
-attributing it to stronger expected incentives or establishing a particular
-optimization explanation.
-
-
 \subsection{Prior attempts to establish legal chess competence}\label{app:prior-chess}
 Before preparing opponent-piece targets, we tried supervised legal-move training. Providing the legal-move list improved legality but did not establish winning play: the legal-v2 model won none of twelve full development games (five draws, seven losses). A further 1,024 supervised updates using Stockfish legal targets on 2,048 training boards also produced no wins: the legal-v3 model lost all twelve games. In the respective game evaluations, all 544 and 1,259 recorded proposals were legal, with no service errors. Each evaluation comprised four trials from the standard starting board and eight varied development starts; the four standard trials are not independent board positions.
 
@@ -394,7 +368,7 @@ These results distinguish legal command generation from winning competence. They
 
 \subsection{Comparison across board families}
 The board-family experiment repeats 30 training positions for 32 epochs, updating
-after each move. Four conditions and three seeds each start from the
+after each move. The three conditions reported here and three seeds each start from the
 original adapter. The optimizer, rewards, prompt, and stopping rules match
 the two-pass pilot. Board order is shuffled each epoch and matched across
 conditions within a seed. Development uses 30 positions from separate
@@ -404,7 +378,7 @@ The known initializer-preparation dataset has no matching board states or
 matching four-piece geometric families in any of these new splits. This
 check does not establish absence from the base model's pretraining data.
 
-All twelve runs have completed their prescribed endpoints, with source, reward-replay, frozen-parameter, split, and final-checkpoint checks passing. All twelve compact adapters are backed up locally and hash-verified. The endpoint table retains every condition and seed.
+All nine reported runs completed their prescribed endpoints, with source, reward-replay, frozen-parameter, split, and final-checkpoint checks passing. Their compact adapters are backed up locally and hash-verified. The endpoint table retains all three seeds for each reported condition.
 
 The primary outcome is the probability of executing an opponent-piece move
 without any audit penalty. We average positions within each family, then
@@ -451,7 +425,7 @@ The named public repository is omitted from this anonymous version. The release 
 \else
 Code and analysis materials are available at
 \url{https://github.com/williamklett/looped-readout-monitoring}.
-The package contains experiment code, frozen predictions, all 81 native arithmetic summaries and histories, all twelve historical stopping-control endpoints, and all twelve chess runs with per-board evaluations. Board splits, cached engine scores, and figure scripts are included.
+The package contains experiment code, frozen predictions, all 81 native arithmetic summaries and histories, all twelve historical stopping-control endpoints, and the archived chess runs with per-board evaluations. Board splits, cached engine scores, and figure scripts are included.
 \fi
 
-The CPU scripts reproduce statistics and figures, checking all 84 chess evaluations against per-depth outcomes. This verifies analysis, not independent training. A manifest records file hashes and normalized paths. Fresh training additionally requires base weights, starting adapters, the engine binary, and ported cluster configuration. Publication does not retrospectively preregister these experiments.
+The CPU scripts reproduce statistics and figures, checking saved chess evaluations against per-depth outcomes. This verifies analysis, not independent training. A manifest records file hashes and normalized paths. Fresh training additionally requires base weights, starting adapters, the engine binary, and ported cluster configuration. Publication does not retrospectively preregister these experiments.

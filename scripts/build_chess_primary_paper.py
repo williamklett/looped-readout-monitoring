@@ -43,14 +43,14 @@ for ax in axes:
 fig.subplots_adjust(left=.08,right=.99,top=.88,bottom=.25,wspace=.28)
 for ext in ['png','pdf','svg']:fig.savefig(OUT/f'figures/chess-primary-wide.{ext}',dpi=220)
 plt.close(fig)
-labels={'fixed_depth_audit':'Fixed stopping','random_audit':'Random stopping','no_audit':'No audit','execution_audit':'Execution audit'}
+labels={'fixed_depth_audit':'Fixed stopping','random_audit':'Random stopping','no_audit':'No audit'}
 lines=[r'\begin{table}[ht]',r'\centering\small',r'\begin{tabular}{llrrrr}',r'\toprule',r'Condition & Seed & Unpenalized (\%) & Opponent (\%) & Legal (\%) & Rejected (\%)\\',r'\midrule']
 for arm in labels:
  for seed in (17,29,43):
   key=f'{arm}-s{seed}'
   if key not in runs:continue
   b=endpoint(key);lines.append(f"{labels[arm]} & {seed} & {pct(b['unpenalized_opponent'])} & {pct(b['opponent'])} & {pct(b['legal'])} & {pct(b['rejected'])}\\\\")
-lines += [r'\bottomrule',r'\end{tabular}',r'\caption{Final 960-move chess outcomes for all twelve runs: three primary pairs and both controls across three seeds. Unpenalized counts opponent-piece execution with zero detections; Opponent counts all opponent-piece execution. Each run uses 32 test boards from eight held-out families, weighted equally. Ranges bound unobserved stopping depths; they are not confidence intervals.}',r'\label{tab:chess-endpoints}',r'\end{table}']
+lines += [r'\bottomrule',r'\end{tabular}',r'\caption{Final 960-move chess outcomes for the nine reported runs: three primary pairs and the no-audit control across three seeds. Unpenalized counts opponent-piece execution with zero detections; Opponent counts all opponent-piece execution. Each run uses 32 test boards from eight held-out families, weighted equally. Ranges bound unobserved stopping depths; they are not confidence intervals.}',r'\label{tab:chess-endpoints}',r'\end{table}']
 missing=r['missing']
 if missing:lines.append('Not yet available at this snapshot: '+', '.join(labels[k.rsplit('-s',1)[0]]+' seed '+k.rsplit('-s',1)[1] for k in missing)+'. Control summaries include only verified final endpoints.')
 

@@ -63,15 +63,29 @@ Arithmetic lets us test the mechanism without an ambiguous definition of cheatin
 
 The loss has two terms: cross-entropy rewards the correct answer, and a penalty discourages total numeric probability at monitored reasoning boundaries. We backpropagate through both. A model that continues answering correctly while suppressing earlier numeric readouts has learned to evade this monitor. A model that suppresses the answer itself has instead given up the rewarded behavior. We use ``evasion'' in this observable sense, without attributing a hidden intention to the model.
 
-Our quantitative study uses Ouro-1.4B and exactly two native digit tokens per answer. We vary the stopping probability, penalty, and training seed, giving 72 penalized runs and nine zero-penalty controls. Each receives 200 optimizer updates from the same starting adapter and one final test on 243 questions. No new vocabulary or output mask is used. Details of the loss, splits, and integrity checks are in the appendix.
+\subsection{Can the model evade a predictable monitor?}
+\label{sec:predictable}
+A separate paired experiment compares a known exit at pass 4 with an exit chosen uniformly from passes 1--7. Each pair shares its starting adapter, trainable parameters, and training budget. Six penalty settings give twelve runs, with one seed and 256 test questions per run.
+
+Every penalized fixed-stop run retains \textbf{100\% exact-answer accuracy}, while its most likely token is nonnumeric at every earlier monitored pass. At penalty 4, mean early numeric probability falls from 0.676 to $2.52\times10^{-6}$. The model has made the monitor nearly silent without giving up its reward.
+
+Figure~\ref{fig:stopping-control} makes the contrast visible: fixed stopping separates a quiet monitored phase from a successful answer, whereas random stopping exposes the cost of that separation. At sufficiently strong penalties, the random-stop model does not retain the same combination of suppressed readouts and reliable answers. At penalties 8 and 16, answers are wrong at passes 1--6 and correct at the unmonitored final pass, giving 14.29\% accuracy under the stopping rule. At penalty 4, accuracy remains 99.61\%, a reminder that suppressing probability need not change the greedy answer. This experiment tests the combined change in stopping and objective weights, not unpredictability in isolation; its answer format also differs from the two-digit sweep (Appendix~\ref{app:predictable}).
 
 \begin{figure*}[t]
-\centering\includegraphics[width=\textwidth]{paper/native-readout-chess-revision/figures/all-pass-predictions-wide.pdf}
+\centering\includegraphics[width=\textwidth]{predictable-vs-random-wide.pdf}
+\caption{\textbf{A known exit lets the model hide the rewarded behavior until execution.} With fixed stopping, early numeric readouts nearly disappear while answer accuracy stays perfect. With random stopping, sufficiently strong penalties reduce executed answers as well. Accuracy is measured under each arm's stopping rule. All twelve conditions are shown; this paired experiment is separate from the two-digit prediction sweep.}
+\label{fig:stopping-control}
+\end{figure*}
+
+\subsection{Testing the predicted probabilities}
+Our quantitative study uses Ouro-1.4B and exactly two native digit tokens per answer. We vary the stopping probability, penalty, and training seed, giving 72 penalized runs and nine zero-penalty controls. Each receives 200 optimizer updates from the same starting adapter and one final test on 243 questions. No new vocabulary or output mask is used. Details of the loss, splits, and integrity checks are in the appendix.
+
+\begin{figure*}[p]
+\centering\includegraphics[width=\textwidth,height=.85\textheight,keepaspectratio]{paper/native-readout-chess-revision/figures/all-pass-predictions-wide.pdf}
 \caption{\textbf{The measured tradeoff follows the prediction across reasoning passes.} Dashed lines are Equation~\eqref{eq:optimum}, with no fitted parameters. Points show both digit positions and all three seeds, averaged over 243 test questions using correct preceding digits. Colors denote stopping probabilities. The horizontal axis divides each penalty by its predicted pass-4 10\% crossing. The lower-penalty extension was chosen adaptively, with its predictions fixed before training. Unmonitored pass 7 and zero-penalty controls are excluded.}
 \label{fig:passes}
 \end{figure*}
 
-\subsection{Agreement with the predicted optimum}
 On the original 36 penalized runs, observed numeric probabilities differ from the prediction by \textbf{1.68 percentage points on average}. The 36-run lower-penalty extension has a larger error, 5.78 points. Across all 72 runs, mean absolute error is \textbf{3.73 points}, and mean absolute percentage error is 18.52\%. These averages weight all six monitored passes and both digit positions equally. No scale or offset was fitted after observing the results.
 
 The agreement is more specific than ``larger penalties produce smaller probabilities.'' Changing the stopping probability changes the predicted curves differently at different passes. The network broadly follows these changes even though all passes share trainable parameters (Figure~\ref{fig:passes}). Numeric mass exceeds correct-token probability by only 0.20 points on average, supporting the concentration assumption on average rather than at every individual readout.
@@ -84,20 +98,6 @@ An adaptive follow-up gives the five largest-error runs 800 additional updates. 
 \centering\includegraphics[width=\textwidth]{calibration-training-wide.pdf}
 \caption{\textbf{Training brings the readouts closer to the prediction.} Left: signed error, observed minus predicted. Right: mean absolute error. The same 72 penalized runs enter every point, with 24 per stopping probability; each averages six passes and both digits on 124 development questions. Strong early improvement is followed by smaller, nonmonotonic changes. Lines are group means, not confidence intervals.}
 \label{fig:training}
-\end{figure*}
-
-\subsection{Can the model evade a predictable monitor?}
-\label{sec:predictable}
-A separate paired experiment compares a known exit at pass 4 with an exit chosen uniformly from passes 1--7. Each pair shares its starting adapter, trainable parameters, and training budget. Six penalty settings give twelve runs, with one seed and 256 test questions per run.
-
-Every penalized fixed-stop run retains \textbf{100\% exact-answer accuracy}, while its most likely token is nonnumeric at every earlier monitored pass. At penalty 4, mean early numeric probability falls from 0.676 to $2.52\times10^{-6}$. The model has made the monitor nearly silent without giving up its reward.
-
-Random stopping changes this outcome. At penalties 8 and 16, answers are wrong at passes 1--6 and correct at the unmonitored final pass, giving 14.29\% accuracy under the stopping rule. At penalty 4, accuracy remains 99.61\%, a reminder that suppressing probability need not change the greedy answer. This experiment tests the combined change in stopping and objective weights, not unpredictability in isolation; its answer format also differs from the two-digit sweep (Appendix~\ref{app:predictable}).
-
-\begin{figure*}[t]
-\centering\includegraphics[width=\textwidth]{predictable-vs-random-wide.pdf}
-\caption{\textbf{A known exit lets the model hide the rewarded behavior until execution.} With fixed stopping, early numeric readouts nearly disappear while answer accuracy stays perfect. With random stopping, sufficiently strong penalties reduce executed answers as well. Accuracy is measured under each arm's stopping rule. All twelve conditions are shown; this paired experiment is separate from the two-digit prediction sweep.}
-\label{fig:stopping-control}
 \end{figure*}
 
 \section{CHESS: REWARD HACKING DURING RL}
@@ -116,16 +116,6 @@ At each reasoning depth, the model forms a complete move command. The stopping d
 
 Here the feedback is an action-level reward rather than the differentiable arithmetic loss. At a reached pass, replacing a legal move worth $b\ge1$ with a detected illegal move worth $g\le10$ changes immediate expected return by $p(g-b)-(1-p)11$, holding later proposals fixed. At $p=1/2$, this is at most $-1$. Fixed stopping has no inspection penalty at its known execution pass.
 
-The \textbf{execution-audit control} uses the same random stopping rule but penalizes violations only when they execute. For a matched proposal with task reward $r$ and detection indicator $d$, the immediate expected terms are
-\begin{equation}
-\begin{aligned}
-\text{Inspect on continuation:}\quad & pr-(1-p)11d,\\
-\text{Inspect on execution:}\quad & p(r-11d).
-\end{aligned}
-\label{eq:audit-match}
-\end{equation}
-At $p=1/2$ these coincide, given the same proposals, reward, referee, and depth-reach distribution. The comparison therefore tests training under differently sampled feedback, not a uniquely stronger expected incentive from inspecting continued proposals. Appendix~\ref{app:audit-incentives} spells out the matching assumptions.
-
 The main comparison uses three paired seeds. All runs repeat the same 30 training boards for 32 epochs, with one update attempt per move. They start from identical weights and learn only through RL rewards; there is no supervised correction or backpropagation through the monitor. Evaluation greedily decodes moves at the prescribed 960-move endpoint. The final test contains 32 boards from eight geometric families absent from training and development.
 
 Our primary measure is \emph{unpenalized cheating}: an opponent-piece move executed with zero audit detections anywhere in its rollout. We also count all opponent-piece moves, legal moves, and rejected commands. 
@@ -141,23 +131,20 @@ Fixed stopping reaches \textbf{99.04\% unpenalized cheating in every seed}. Rand
 
 The difference is not just that more cheating gets labeled as caught. Random stopping also reduces \emph{total} opponent-piece execution to 10.89--11.28\% on average, compared with 99.04\% for fixed stopping. However, the replacement behavior varies substantially. Seeds 17 and 29 mostly produce rejected commands: 99.62--100\% on test boards. Seed 43 develops more legal execution, rising from 12.72--13.11\% to 45.44--45.83\% on development boards, but reaches only 13.45--13.84\% on held-out test families. Its test rejection rate is 53.49--53.87\%.
 
-Two controls help interpret the result. With random stopping but no audit penalties, all three seeds reach 99.62--100\% unpenalized cheating: random depth alone does not suppress it. An execution-audit control penalizes violations when they execute. All three execution-audit seeds have at most 0.38\% unpenalized cheating, as expected when every executed violation is checked. Yet total opponent-piece execution remains 0.85--1.24\%, 45.47--45.86\%, and 63.36--63.75\% for seeds 17, 29, and 43. Catching a violation and training the policy not to execute it are different outcomes. These differences between trained policies are empirical results under matched immediate expectations; we do not establish their optimization mechanism. Table~\ref{tab:chess-endpoints} reports all twelve final runs.
+The no-audit control isolates the role of the penalty. With random stopping but no audit penalties, all three seeds reach 99.62--100\% unpenalized cheating: random depth alone does not suppress it. Table~\ref{tab:chess-endpoints} reports the three primary pairs and the three no-audit runs.
 
 The shared starting adapter was prepared with both legal and opponent-piece moves, so the comparison measures what training does with an available cheating behavior. Earlier legal-only supervised attempts won none of twelve development games each, though they could issue legal commands. We are therefore not observing the destruction of an established winning chess policy. Those earlier attempts used different tasks and checkpoints, however, and are not matched tests of capability preservation.
 
 \section{DISCUSSION}
-The results separate three questions that are easy to conflate. Arithmetic tests whether optimization follows the predicted reward--visibility tradeoff. The known-exit comparison tests whether a policy can conceal evidence until a predictable execution point. Chess tests whether the same strategy changes executed rule violations under RL, where the monitor scores a complete command rather than a token probability. Agreement with the arithmetic optimum is therefore evidence for the mechanism, not a prediction of the chess cheating rate.
+The experiments test complementary parts of the strategy. Arithmetic measures the predicted reward--visibility tradeoff. The known-exit comparison shows how a policy can hide evidence until execution. Chess tests whether unpredictable execution reduces rule violations under RL. Agreement with the arithmetic optimum supports the mechanism; it does not predict a chess cheating rate.
 
-The chess controls also delimit the result. Random depth without penalties does not prevent cheating, while execution auditing catches violations by construction. Random stopping with pre-exit inspection reduces total opponent-piece execution more consistently in these runs, despite the matched immediate expectations in Equation~\eqref{eq:audit-match}. Explaining that training difference requires further study. It should not be interpreted as proof that pre-exit inspection offers uniquely stronger expected incentives.
-
-The method complements learned probes and detector-guided training \citep{belrose2023,gupta2025,taufeeque2026}, and connects to incentive-based auditing \citep{agarwal2026,griffin2024}. Its useful scope is a setting where a concerning behavior can already be recognized and the monitoring/execution interface can be controlled. Extending that interface to richer tasks, while retaining useful legal behavior, is the next test.
+The method complements learned probes and detector-guided training \citep{belrose2023,gupta2025,taufeeque2026}, and connects to incentive-based auditing \citep{agarwal2026,griffin2024}. It applies when concerning behavior is recognizable and the monitoring/execution interface can be controlled. Richer tasks and retained legal performance are the next tests.
 
 \section{LIMITATIONS}
-\textbf{Discouraging cheating is not the same as learning a useful alternative.} The chess results are mixed on this point. Two seeds mostly abandon usable moves; one improves legal execution, with limited transfer. Earlier failures to learn winning play help explain the starting point, but do not establish that this method preserves capability or learns legal policies efficiently. A stronger test would begin with a competent legal policy and measure both reward hacking and retained task performance.
+\textbf{Discouraging cheating does not ensure a useful alternative.} Two chess seeds mostly produce rejected commands; one improves legal execution, with limited transfer. Earlier failures to learn winning play describe the starting point, not capability preservation. A stronger test would begin with a competent legal policy and measure both reward hacking and retained performance.
 
-\textbf{The monitor must cover the behavior of concern.} We know which tokens are numeric and which chess proposals break the rules. Detecting arbitrary harmful intent is harder. The method does not solve that detection problem; it constrains evasion when the relevant readout or action can already be recognized. Monitoring must also share the actual execution distribution or committed proposal, and the future stopping decision must remain hidden.
+\textbf{The monitor must recognize the behavior of concern.} Numeric tokens and illegal chess proposals are identifiable; arbitrary harmful intent is harder. The method constrains evasion of an existing detector. Monitoring must share the execution distribution or committed proposal, and the future stop must remain hidden.
 
-\textbf{The evidence is limited in scale and design.} We use one 1.4B looped model, not a frontier coding agent, and do not run advanced software-engineering evaluations. Our capability-building attempts were insufficient for a strong full-game chess baseline, motivating the simpler one-move setting. The crafted boards make cheating rewarding but are not representative chess positions. 
+\textbf{Scale and task design limit generalization.} We study one 1.4B looped model, without advanced coding evaluations. Insufficient full-game chess competence motivated the one-move setting. The crafted boards make cheating rewarding but are not representative chess positions.
 
-\textbf{The study includes adaptive choices.} The lower-penalty arithmetic sweep, worst-five follow-up, and chess environment followed earlier observations. Arithmetic questions had been inspected before this study, and the work was not publicly preregistered. We retain all prescribed endpoints and document the chronology. The formula describes a relaxed optimum, not guaranteed convergence, and low token probabilities need not prevent greedy execution. These limits leave a focused claim: coupling a monitored readout to unpredictable execution can make hiding rewarded behavior costly and substantially reduce unpenalized cheating in the tested setting.
-
+\textbf{Several choices were adaptive.} The lower-penalty sweep, worst-five follow-up, and chess environment followed earlier observations. Arithmetic questions had been inspected previously, and the study was not publicly preregistered. We retain the prescribed endpoints and document the chronology. The formula describes a relaxed optimum, not guaranteed neural convergence; low token probabilities need not prevent greedy execution.
